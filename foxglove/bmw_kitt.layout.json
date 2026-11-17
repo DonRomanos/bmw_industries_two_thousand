@@ -1,0 +1,829 @@
+{
+  "configById": {
+    "Publish!l_off": {
+      "topicName": "/lights_cmd",
+      "datatype": "car_interfaces/msg/LightsCmd",
+      "buttonText": "All off",
+      "buttonTooltip": "",
+      "buttonColor": "#6b7280",
+      "advancedView": false,
+      "value": "{\n \"header\": {\n  \"stamp\": {\n   \"sec\": 0,\n   \"nanosec\": 0\n  },\n  \"frame_id\": \"\"\n },\n \"front_rgb\": [\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0\n ],\n \"rear_rgb\": [\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0\n ],\n \"mode\": 0,\n \"blink_period_ms\": 500,\n \"flags\": 0\n}",
+      "foxglovePanelTitle": "Lights"
+    },
+    "Publish!l_head": {
+      "topicName": "/lights_cmd",
+      "datatype": "car_interfaces/msg/LightsCmd",
+      "buttonText": "Headlights",
+      "buttonTooltip": "front white, rear red",
+      "buttonColor": "#3b78d8",
+      "advancedView": false,
+      "value": "{\n \"header\": {\n  \"stamp\": {\n   \"sec\": 0,\n   \"nanosec\": 0\n  },\n  \"frame_id\": \"\"\n },\n \"front_rgb\": [\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255\n ],\n \"rear_rgb\": [\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0\n ],\n \"mode\": 0,\n \"blink_period_ms\": 500,\n \"flags\": 0\n}",
+      "foxglovePanelTitle": "Lights"
+    },
+    "Publish!l_white": {
+      "topicName": "/lights_cmd",
+      "datatype": "car_interfaces/msg/LightsCmd",
+      "buttonText": "All white",
+      "buttonTooltip": "",
+      "buttonColor": "#3b78d8",
+      "advancedView": false,
+      "value": "{\n \"header\": {\n  \"stamp\": {\n   \"sec\": 0,\n   \"nanosec\": 0\n  },\n  \"frame_id\": \"\"\n },\n \"front_rgb\": [\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255\n ],\n \"rear_rgb\": [\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255\n ],\n \"mode\": 0,\n \"blink_period_ms\": 500,\n \"flags\": 0\n}",
+      "foxglovePanelTitle": "Lights"
+    },
+    "Publish!l_red": {
+      "topicName": "/lights_cmd",
+      "datatype": "car_interfaces/msg/LightsCmd",
+      "buttonText": "All red",
+      "buttonTooltip": "",
+      "buttonColor": "#3b78d8",
+      "advancedView": false,
+      "value": "{\n \"header\": {\n  \"stamp\": {\n   \"sec\": 0,\n   \"nanosec\": 0\n  },\n  \"frame_id\": \"\"\n },\n \"front_rgb\": [\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0\n ],\n \"rear_rgb\": [\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0\n ],\n \"mode\": 0,\n \"blink_period_ms\": 500,\n \"flags\": 0\n}",
+      "foxglovePanelTitle": "Lights"
+    },
+    "Publish!l_amber": {
+      "topicName": "/lights_cmd",
+      "datatype": "car_interfaces/msg/LightsCmd",
+      "buttonText": "All amber",
+      "buttonTooltip": "",
+      "buttonColor": "#3b78d8",
+      "advancedView": false,
+      "value": "{\n \"header\": {\n  \"stamp\": {\n   \"sec\": 0,\n   \"nanosec\": 0\n  },\n  \"frame_id\": \"\"\n },\n \"front_rgb\": [\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0\n ],\n \"rear_rgb\": [\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0,\n  255,\n  140,\n  0\n ],\n \"mode\": 0,\n \"blink_period_ms\": 500,\n \"flags\": 0\n}",
+      "foxglovePanelTitle": "Lights"
+    },
+    "Publish!l_left": {
+      "topicName": "/lights_cmd",
+      "datatype": "car_interfaces/msg/LightsCmd",
+      "buttonText": "Indicator left",
+      "buttonTooltip": "MODE_INDICATOR_LEFT",
+      "buttonColor": "#e0a030",
+      "advancedView": false,
+      "value": "{\n \"header\": {\n  \"stamp\": {\n   \"sec\": 0,\n   \"nanosec\": 0\n  },\n  \"frame_id\": \"\"\n },\n \"front_rgb\": [\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255\n ],\n \"rear_rgb\": [\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0\n ],\n \"mode\": 1,\n \"blink_period_ms\": 500,\n \"flags\": 0\n}",
+      "foxglovePanelTitle": "Lights"
+    },
+    "Publish!l_right": {
+      "topicName": "/lights_cmd",
+      "datatype": "car_interfaces/msg/LightsCmd",
+      "buttonText": "Indicator right",
+      "buttonTooltip": "MODE_INDICATOR_RIGHT",
+      "buttonColor": "#e0a030",
+      "advancedView": false,
+      "value": "{\n \"header\": {\n  \"stamp\": {\n   \"sec\": 0,\n   \"nanosec\": 0\n  },\n  \"frame_id\": \"\"\n },\n \"front_rgb\": [\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255\n ],\n \"rear_rgb\": [\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0\n ],\n \"mode\": 2,\n \"blink_period_ms\": 500,\n \"flags\": 0\n}",
+      "foxglovePanelTitle": "Lights"
+    },
+    "Publish!l_hazard": {
+      "topicName": "/lights_cmd",
+      "datatype": "car_interfaces/msg/LightsCmd",
+      "buttonText": "Hazard",
+      "buttonTooltip": "MODE_HAZARD",
+      "buttonColor": "#e0a030",
+      "advancedView": false,
+      "value": "{\n \"header\": {\n  \"stamp\": {\n   \"sec\": 0,\n   \"nanosec\": 0\n  },\n  \"frame_id\": \"\"\n },\n \"front_rgb\": [\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255\n ],\n \"rear_rgb\": [\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0\n ],\n \"mode\": 3,\n \"blink_period_ms\": 500,\n \"flags\": 0\n}",
+      "foxglovePanelTitle": "Lights"
+    },
+    "Publish!l_brake": {
+      "topicName": "/lights_cmd",
+      "datatype": "car_interfaces/msg/LightsCmd",
+      "buttonText": "Brake light",
+      "buttonTooltip": "FLAG_BRAKE",
+      "buttonColor": "#d64545",
+      "advancedView": false,
+      "value": "{\n \"header\": {\n  \"stamp\": {\n   \"sec\": 0,\n   \"nanosec\": 0\n  },\n  \"frame_id\": \"\"\n },\n \"front_rgb\": [\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0\n ],\n \"rear_rgb\": [\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0,\n  255,\n  0,\n  0\n ],\n \"mode\": 0,\n \"blink_period_ms\": 500,\n \"flags\": 1\n}",
+      "foxglovePanelTitle": "Lights"
+    },
+    "Publish!l_reverse": {
+      "topicName": "/lights_cmd",
+      "datatype": "car_interfaces/msg/LightsCmd",
+      "buttonText": "Reverse light",
+      "buttonTooltip": "FLAG_REVERSE",
+      "buttonColor": "#d64545",
+      "advancedView": false,
+      "value": "{\n \"header\": {\n  \"stamp\": {\n   \"sec\": 0,\n   \"nanosec\": 0\n  },\n  \"frame_id\": \"\"\n },\n \"front_rgb\": [\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0,\n  0\n ],\n \"rear_rgb\": [\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255,\n  255\n ],\n \"mode\": 0,\n \"blink_period_ms\": 500,\n \"flags\": 2\n}",
+      "foxglovePanelTitle": "Lights"
+    },
+    "Publish!horn_on": {
+      "topicName": "/horn_cmd",
+      "datatype": "std_msgs/msg/Bool",
+      "buttonText": "Horn ON",
+      "buttonTooltip": "",
+      "buttonColor": "#d64545",
+      "advancedView": false,
+      "value": "{\n \"data\": true\n}",
+      "foxglovePanelTitle": "Horn"
+    },
+    "Publish!horn_off": {
+      "topicName": "/horn_cmd",
+      "datatype": "std_msgs/msg/Bool",
+      "buttonText": "Horn OFF",
+      "buttonTooltip": "",
+      "buttonColor": "#2e9e5b",
+      "advancedView": false,
+      "value": "{\n \"data\": false\n}",
+      "foxglovePanelTitle": "Horn"
+    },
+    "Publish!mode_remote": {
+      "topicName": "/drive_mode",
+      "datatype": "car_interfaces/msg/DriveMode",
+      "buttonText": "Mode: MANUAL_REMOTE",
+      "buttonTooltip": "Stadia controller; the firmware only honours the request if its conditions hold",
+      "buttonColor": "#2e9e5b",
+      "advancedView": false,
+      "value": "{\n \"header\": {\n  \"stamp\": {\n   \"sec\": 0,\n   \"nanosec\": 0\n  },\n  \"frame_id\": \"\"\n },\n \"mode\": 1\n}",
+      "foxglovePanelTitle": "Mode"
+    },
+    "Publish!mode_auto": {
+      "topicName": "/drive_mode",
+      "datatype": "car_interfaces/msg/DriveMode",
+      "buttonText": "Mode: AUTONOMY",
+      "buttonTooltip": "Needs /jetson_heartbeat < 3 s and fresh /cmd_vel, /drive_cmd or /steer_cmd",
+      "buttonColor": "#e0a030",
+      "advancedView": false,
+      "value": "{\n \"header\": {\n  \"stamp\": {\n   \"sec\": 0,\n   \"nanosec\": 0\n  },\n  \"frame_id\": \"\"\n },\n \"mode\": 2\n}",
+      "foxglovePanelTitle": "Mode"
+    },
+    "Publish!heartbeat": {
+      "topicName": "/jetson_heartbeat",
+      "datatype": "std_msgs/msg/Header",
+      "buttonText": "Heartbeat (once)",
+      "buttonTooltip": "Autonomy needs ~1 Hz; one click only keeps it alive for 3 s",
+      "buttonColor": "#6b7280",
+      "advancedView": false,
+      "value": "{\n \"stamp\": {\n  \"sec\": 0,\n  \"nanosec\": 0\n },\n \"frame_id\": \"\"\n}",
+      "foxglovePanelTitle": "Beat"
+    },
+    "Publish!stop_drive": {
+      "topicName": "/drive_cmd",
+      "datatype": "std_msgs/msg/Float32",
+      "buttonText": "STOP /drive_cmd",
+      "buttonTooltip": "",
+      "buttonColor": "#d64545",
+      "advancedView": false,
+      "value": "{\n \"data\": 0.0\n}",
+      "foxglovePanelTitle": "Drive"
+    },
+    "Publish!stop_vel": {
+      "topicName": "/cmd_vel",
+      "datatype": "geometry_msgs/msg/Twist",
+      "buttonText": "STOP /cmd_vel",
+      "buttonTooltip": "",
+      "buttonColor": "#d64545",
+      "advancedView": false,
+      "value": "{\n \"linear\": {\n  \"x\": 0.0,\n  \"y\": 0.0,\n  \"z\": 0.0\n },\n \"angular\": {\n  \"x\": 0.0,\n  \"y\": 0.0,\n  \"z\": 0.0\n }\n}",
+      "foxglovePanelTitle": "Stop"
+    },
+    "Publish!drive_fwd": {
+      "topicName": "/drive_cmd",
+      "datatype": "std_msgs/msg/Float32",
+      "buttonText": "Drive +10 %",
+      "buttonTooltip": "percent of full stick, only used in AUTONOMY",
+      "buttonColor": "#e0a030",
+      "advancedView": false,
+      "value": "{\n \"data\": 10.0\n}",
+      "foxglovePanelTitle": "Drive"
+    },
+    "Publish!drive_rev": {
+      "topicName": "/drive_cmd",
+      "datatype": "std_msgs/msg/Float32",
+      "buttonText": "Drive -10 %",
+      "buttonTooltip": "percent of full stick, only used in AUTONOMY",
+      "buttonColor": "#e0a030",
+      "advancedView": false,
+      "value": "{\n \"data\": -10.0\n}",
+      "foxglovePanelTitle": "Drive"
+    },
+    "Publish!steer_left": {
+      "topicName": "/steer_cmd",
+      "datatype": "car_interfaces/msg/SteerCmd",
+      "buttonText": "Steer left 0.2 rad",
+      "buttonTooltip": "+left, the firmware clamps to its calibrated range",
+      "buttonColor": "#3b78d8",
+      "advancedView": false,
+      "value": "{\n \"header\": {\n  \"stamp\": {\n   \"sec\": 0,\n   \"nanosec\": 0\n  },\n  \"frame_id\": \"\"\n },\n \"angle_rad\": 0.2\n}",
+      "foxglovePanelTitle": "Steer"
+    },
+    "Publish!steer_center": {
+      "topicName": "/steer_cmd",
+      "datatype": "car_interfaces/msg/SteerCmd",
+      "buttonText": "Steer centre",
+      "buttonTooltip": "",
+      "buttonColor": "#2e9e5b",
+      "advancedView": false,
+      "value": "{\n \"header\": {\n  \"stamp\": {\n   \"sec\": 0,\n   \"nanosec\": 0\n  },\n  \"frame_id\": \"\"\n },\n \"angle_rad\": 0.0\n}",
+      "foxglovePanelTitle": "Steer"
+    },
+    "Publish!steer_right": {
+      "topicName": "/steer_cmd",
+      "datatype": "car_interfaces/msg/SteerCmd",
+      "buttonText": "Steer right 0.2 rad",
+      "buttonTooltip": "",
+      "buttonColor": "#3b78d8",
+      "advancedView": false,
+      "value": "{\n \"header\": {\n  \"stamp\": {\n   \"sec\": 0,\n   \"nanosec\": 0\n  },\n  \"frame_id\": \"\"\n },\n \"angle_rad\": -0.2\n}",
+      "foxglovePanelTitle": "Steer"
+    },
+    "Tab!buttons": {
+      "activeTabIdx": 0,
+      "tabs": [
+        {
+          "title": "Lights",
+          "layout": {
+            "direction": "column",
+            "first": {
+              "direction": "row",
+              "first": "Publish!l_off",
+              "second": {
+                "direction": "row",
+                "first": "Publish!l_head",
+                "second": {
+                  "direction": "row",
+                  "first": "Publish!l_white",
+                  "second": {
+                    "direction": "row",
+                    "first": "Publish!l_red",
+                    "second": "Publish!l_amber",
+                    "splitPercentage": 50.0
+                  },
+                  "splitPercentage": 33.33
+                },
+                "splitPercentage": 25.0
+              },
+              "splitPercentage": 20.0
+            },
+            "second": {
+              "direction": "row",
+              "first": "Publish!l_left",
+              "second": {
+                "direction": "row",
+                "first": "Publish!l_right",
+                "second": {
+                  "direction": "row",
+                  "first": "Publish!l_hazard",
+                  "second": {
+                    "direction": "row",
+                    "first": "Publish!l_brake",
+                    "second": "Publish!l_reverse",
+                    "splitPercentage": 50.0
+                  },
+                  "splitPercentage": 33.33
+                },
+                "splitPercentage": 25.0
+              },
+              "splitPercentage": 20.0
+            },
+            "splitPercentage": 50.0
+          }
+        },
+        {
+          "title": "Horn & mode",
+          "layout": {
+            "direction": "column",
+            "first": {
+              "direction": "row",
+              "first": "Publish!horn_on",
+              "second": "Publish!horn_off",
+              "splitPercentage": 50.0
+            },
+            "second": {
+              "direction": "row",
+              "first": "Publish!mode_remote",
+              "second": {
+                "direction": "row",
+                "first": "Publish!mode_auto",
+                "second": "Publish!heartbeat",
+                "splitPercentage": 50.0
+              },
+              "splitPercentage": 33.33
+            },
+            "splitPercentage": 50.0
+          }
+        },
+        {
+          "title": "Drive & steer",
+          "layout": {
+            "direction": "column",
+            "first": {
+              "direction": "row",
+              "first": "Publish!stop_drive",
+              "second": {
+                "direction": "row",
+                "first": "Publish!stop_vel",
+                "second": {
+                  "direction": "row",
+                  "first": "Publish!drive_fwd",
+                  "second": "Publish!drive_rev",
+                  "splitPercentage": 50.0
+                },
+                "splitPercentage": 33.33
+              },
+              "splitPercentage": 25.0
+            },
+            "second": {
+              "direction": "row",
+              "first": "Publish!steer_left",
+              "second": {
+                "direction": "row",
+                "first": "Publish!steer_center",
+                "second": "Publish!steer_right",
+                "splitPercentage": 50.0
+              },
+              "splitPercentage": 33.33
+            },
+            "splitPercentage": 50.0
+          }
+        }
+      ],
+      "foxglovePanelTitle": "Controls"
+    },
+    "3D!path": {
+      "followTf": "odom",
+      "followMode": "follow-none",
+      "cameraState": {
+        "perspective": true,
+        "distance": 12,
+        "phi": 55,
+        "thetaOffset": 90,
+        "targetOffset": [
+          0,
+          0,
+          0
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "targetOrientation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "fovy": 45,
+        "near": 0.5,
+        "far": 5000
+      },
+      "scene": {
+        "backgroundColor": "#15181e",
+        "enableStats": false
+      },
+      "transforms": {
+        "showLabel": false
+      },
+      "topics": {
+        "/visual_slam/tracking/slam_path": {
+          "visible": true,
+          "lineWidth": 0.06,
+          "color": "#2ee59d"
+        },
+        "/visual_slam/tracking/vo_path": {
+          "visible": true,
+          "lineWidth": 0.03,
+          "color": "#4aa8ff"
+        },
+        "/plan": {
+          "visible": true,
+          "lineWidth": 0.08,
+          "color": "#ffcf33"
+        },
+        "/nvblox_node/static_occupancy_grid": {
+          "visible": true
+        },
+        "/nvblox_node/static_esdf_pointcloud": {
+          "visible": true,
+          "pointSize": 5,
+          "colorMode": "colormap",
+          "colorField": "intensity",
+          "colorMap": "turbo"
+        },
+        "/local_costmap/costmap": {
+          "visible": false
+        },
+        "/global_costmap/costmap": {
+          "visible": false
+        }
+      },
+      "layers": {
+        "grid": {
+          "layerId": "foxglove.Grid",
+          "visible": true,
+          "frameId": "odom",
+          "size": 30,
+          "divisions": 30,
+          "lineWidth": 1,
+          "color": "#2b3a4a",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "order": 1
+        },
+        "urdf": {
+          "layerId": "foxglove.Urdf",
+          "visible": true,
+          "sourceType": "topic",
+          "topic": "/robot_description",
+          "order": 2
+        }
+      },
+      "publish": {
+        "type": "pose",
+        "poseTopic": "/goal_pose",
+        "pointTopic": "/clicked_point",
+        "poseEstimateTopic": "/initialpose",
+        "poseEstimateXDeviation": 0.5,
+        "poseEstimateYDeviation": 0.5,
+        "poseEstimateThetaDeviation": 0.26
+      },
+      "foxglovePanelTitle": "3D SLAM + nvblox"
+    },
+    "Image!left": {
+      "cameraTopic": "/preview/left/compressed",
+      "enabledMarkerTopics": [],
+      "synchronize": false,
+      "transformMarkers": false,
+      "smooth": false,
+      "flipHorizontal": false,
+      "flipVertical": false,
+      "rotation": 0,
+      "mode": "fit",
+      "imageMode": {
+        "imageTopic": "/preview/left/compressed",
+        "calibrationTopic": null
+      },
+      "foxglovePanelTitle": "Left camera"
+    },
+    "Image!right": {
+      "cameraTopic": "/preview/right/compressed",
+      "enabledMarkerTopics": [],
+      "synchronize": false,
+      "transformMarkers": false,
+      "smooth": false,
+      "flipHorizontal": false,
+      "flipVertical": false,
+      "rotation": 0,
+      "mode": "fit",
+      "imageMode": {
+        "imageTopic": "/preview/right/compressed",
+        "calibrationTopic": null
+      },
+      "foxglovePanelTitle": "Right camera"
+    },
+    "Image!back": {
+      "cameraTopic": "/back_camera/image/compressed",
+      "enabledMarkerTopics": [],
+      "synchronize": false,
+      "transformMarkers": false,
+      "smooth": false,
+      "flipHorizontal": false,
+      "flipVertical": false,
+      "rotation": 0,
+      "mode": "fit",
+      "imageMode": {
+        "imageTopic": "/back_camera/image/compressed",
+        "calibrationTopic": null
+      },
+      "foxglovePanelTitle": "Back camera"
+    },
+    "DiagnosticSummary!diag": {
+      "minLevel": 0,
+      "pinnedIds": [],
+      "topicToRender": "/diagnostics",
+      "hardwareIdFilter": "",
+      "sortByLevel": true,
+      "foxglovePanelTitle": "Diagnostics"
+    },
+    "DiagnosticStatusPanel!diag": {
+      "topicToRender": "/diagnostics",
+      "numeric": false,
+      "sortByLevel": true,
+      "selectedHardwareId": null,
+      "selectedName": null,
+      "splitFraction": 0.4,
+      "foxglovePanelTitle": "Diagnostics detail"
+    },
+    "Plot!steer": {
+      "paths": [
+        {
+          "value": "/steer_state.angle_rad",
+          "label": "angle [rad]",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        },
+        {
+          "value": "/steer_state.angle_velocity_rad_s",
+          "label": "velocity [rad/s]",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "followingViewWidth": 30,
+      "sidebarDimension": 0,
+      "foxglovePanelTitle": "Steering"
+    },
+    "Plot!controller": {
+      "paths": [
+        {
+          "value": "/controller_raw.axes[0]",
+          "label": "left x",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        },
+        {
+          "value": "/controller_raw.axes[1]",
+          "label": "left y",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        },
+        {
+          "value": "/controller_raw.axes[2]",
+          "label": "right x",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        },
+        {
+          "value": "/controller_raw.axes[3]",
+          "label": "right y",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        },
+        {
+          "value": "/controller_raw.axes[4]",
+          "label": "brake",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        },
+        {
+          "value": "/controller_raw.axes[5]",
+          "label": "throttle",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "followingViewWidth": 30,
+      "sidebarDimension": 0,
+      "foxglovePanelTitle": "Controller axes"
+    },
+    "RawMessages!steer_state": {
+      "topicPath": "/steer_state",
+      "diffEnabled": false,
+      "diffMethod": "custom",
+      "diffTopicPath": "",
+      "showFullMessageForDiff": false,
+      "expansion": "all",
+      "foxglovePanelTitle": "Steer"
+    },
+    "RawMessages!controller_state": {
+      "topicPath": "/controller_state",
+      "diffEnabled": false,
+      "diffMethod": "custom",
+      "diffTopicPath": "",
+      "showFullMessageForDiff": false,
+      "expansion": "all",
+      "foxglovePanelTitle": "Controller"
+    },
+    "RawMessages!lights_state": {
+      "topicPath": "/lights_state",
+      "diffEnabled": false,
+      "diffMethod": "custom",
+      "diffTopicPath": "",
+      "showFullMessageForDiff": false,
+      "expansion": "all",
+      "foxglovePanelTitle": "Lights"
+    },
+    "3D!nav": {
+      "followTf": "odom",
+      "followMode": "follow-none",
+      "cameraState": {
+        "perspective": false,
+        "distance": 10,
+        "phi": 0,
+        "thetaOffset": 0,
+        "targetOffset": [
+          0,
+          0,
+          0
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "targetOrientation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "fovy": 45,
+        "near": 0.5,
+        "far": 5000
+      },
+      "scene": {
+        "backgroundColor": "#15181e",
+        "enableStats": false
+      },
+      "transforms": {
+        "showLabel": false
+      },
+      "topics": {
+        "/visual_slam/tracking/slam_path": {
+          "visible": true,
+          "lineWidth": 0.06,
+          "color": "#2ee59d"
+        },
+        "/visual_slam/tracking/vo_path": {
+          "visible": true,
+          "lineWidth": 0.03,
+          "color": "#4aa8ff"
+        },
+        "/plan": {
+          "visible": true,
+          "lineWidth": 0.08,
+          "color": "#ffcf33"
+        },
+        "/nvblox_node/static_occupancy_grid": {
+          "visible": false
+        },
+        "/nvblox_node/static_esdf_pointcloud": {
+          "visible": false
+        },
+        "/local_costmap/costmap": {
+          "visible": true,
+          "colorMode": "costmap",
+          "alpha": 0.6
+        },
+        "/global_costmap/costmap": {
+          "visible": true,
+          "colorMode": "costmap",
+          "alpha": 0.4
+        },
+        "/local_costmap/published_footprint": {
+          "visible": true,
+          "color": "#ff4d4d",
+          "lineWidth": 0.05
+        }
+      },
+      "layers": {
+        "grid": {
+          "layerId": "foxglove.Grid",
+          "visible": true,
+          "frameId": "odom",
+          "size": 30,
+          "divisions": 30,
+          "lineWidth": 1,
+          "color": "#2b3a4a",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "order": 1
+        },
+        "urdf": {
+          "layerId": "foxglove.Urdf",
+          "visible": true,
+          "sourceType": "topic",
+          "topic": "/robot_description",
+          "order": 2
+        }
+      },
+      "publish": {
+        "type": "pose",
+        "poseTopic": "/goal_pose",
+        "pointTopic": "/clicked_point",
+        "poseEstimateTopic": "/initialpose",
+        "poseEstimateXDeviation": 0.5,
+        "poseEstimateYDeviation": 0.5,
+        "poseEstimateThetaDeviation": 0.26
+      },
+      "foxglovePanelTitle": "Navigation map"
+    },
+    "Plot!nav_cmd": {
+      "paths": [
+        {
+          "value": "/cmd_vel_smoothed.twist.linear.x",
+          "label": "v [m/s]",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        },
+        {
+          "value": "/cmd_vel_smoothed.twist.angular.z",
+          "label": "omega [rad/s]",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "followingViewWidth": 30,
+      "sidebarDimension": 0,
+      "foxglovePanelTitle": "Nav2 velocity command"
+    },
+    "Tab!map": {
+      "activeTabIdx": 0,
+      "tabs": [
+        {
+          "title": "Navigation",
+          "layout": {
+            "direction": "column",
+            "first": "3D!nav",
+            "second": "Plot!nav_cmd",
+            "splitPercentage": 78.0
+          }
+        },
+        {
+          "title": "3D (SLAM + nvblox)",
+          "layout": "3D!path"
+        }
+      ],
+      "foxglovePanelTitle": "Map"
+    }
+  },
+  "globalVariables": {},
+  "userNodes": {},
+  "playbackConfig": {
+    "speed": 1
+  },
+  "layout": {
+    "direction": "row",
+    "first": {
+      "direction": "column",
+      "first": "Tab!map",
+      "second": {
+        "direction": "row",
+        "first": "Image!left",
+        "second": {
+          "direction": "row",
+          "first": "Image!right",
+          "second": "Image!back",
+          "splitPercentage": 50.0
+        },
+        "splitPercentage": 33.33
+      },
+      "splitPercentage": 64.0
+    },
+    "second": {
+      "direction": "column",
+      "first": {
+        "direction": "row",
+        "first": "DiagnosticSummary!diag",
+        "second": "DiagnosticStatusPanel!diag",
+        "splitPercentage": 50.0
+      },
+      "second": {
+        "direction": "column",
+        "first": {
+          "direction": "row",
+          "first": "Plot!steer",
+          "second": "Plot!controller",
+          "splitPercentage": 50.0
+        },
+        "second": {
+          "direction": "column",
+          "first": {
+            "direction": "row",
+            "first": "RawMessages!steer_state",
+            "second": {
+              "direction": "row",
+              "first": "RawMessages!controller_state",
+              "second": "RawMessages!lights_state",
+              "splitPercentage": 50.0
+            },
+            "splitPercentage": 33.33
+          },
+          "second": "Tab!buttons",
+          "splitPercentage": 31.03
+        },
+        "splitPercentage": 27.5
+      },
+      "splitPercentage": 20.0
+    },
+    "splitPercentage": 55.0
+  }
+}
