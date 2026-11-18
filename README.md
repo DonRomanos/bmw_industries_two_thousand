@@ -8,6 +8,12 @@ What is in here:
 
 | Path | Content |
 |------|---------|
+| [.devcontainer/](.devcontainer), [docker/student/](docker/student) | Development container with ROS 2 and the car's message types, preconfigured to reach the car |
+| [student_ws/](student_ws) | Your colcon workspace (put your packages in `student_ws/src`) |
+| [rviz/kitt.rviz](rviz/kitt.rviz), [scripts/rviz.sh](scripts/rviz.sh) | RViz2 layout and launcher for the dev container |
+| [examples/](examples) | Example scripts: camera, obstacles, navigation goals, lights, drive mode, bag reader |
+| [scripts/play_bag.sh](scripts/play_bag.sh), [scripts/kitt_env.sh](scripts/kitt_env.sh) | Replay a bag as the car inside the dev container / switch a terminal between car and replay |
+| [ros_ws/src/car_interfaces/](ros_ws/src/car_interfaces) | The car's message definitions (lights, steering, drive mode, ...), built into the dev container |
 | [foxglove/bmw_kitt.layout.json](foxglove/bmw_kitt.layout.json) | Foxglove layout: navigation view, 3D SLAM view, cameras, diagnostics, ESP state, buttons for lights/horn/drive |
 | [docker/rviz/](docker/rviz) | RViz2 containers: live view of the car (`run.sh`) and bag replay (`Dockerfile.replay`) |
 | [scripts/view_bag.sh](scripts/view_bag.sh) | Replay a recorded bag in RViz2 |
@@ -26,7 +32,7 @@ _To be filled out._
 | Compute | NVIDIA Jetson Orin Nano, Docker + NVIDIA runtime |
 | Middleware | ROS 2 Lyrical (inside the `isaac_ros_dev` container on the car) |
 | Perception / SLAM | NVIDIA Isaac ROS: **cuVSLAM** (visual odometry/SLAM), stereo depth, **nvblox** (3D map) |
-| Planning / control | **Nav2** with a forward-only Ackermann behavior tree, `ackermann_cmd_node` converts velocity commands to Ackermann commands |
+| Planning / control | **Nav2** with an Ackermann behavior tree (no spin/back-up recovery; slow, blind reversing is allowed), `ackermann_cmd_node` converts Nav2 velocity commands to the ESP's `/cmd_vel` and `/steer_cmd` |
 | Motor / steering controller | ESP32 running a **micro-ROS** client (UDP 8888); the micro-ROS agent on the car bridges it into ROS 2 |
 | Cameras | Zero-copy stereo camera node (Argus), calibration included, optional rear USB camera |
 | Vehicle model | URDF generated from one config (`vehicle.yaml`), frames follow REP-105 (`base_link` = centre of the rear axle, x forward, y left, z up) |
@@ -77,10 +83,9 @@ Camera and map topics are large; use the `/preview/...` topics over Wi-Fi.
 
 | Topic | Type | Description |
 |-------|------|-------------|
-| `/ackermann_cmd` | `ackermann_msgs/AckermannDriveStamped` | Speed and steering angle from Nav2 (`ackermann_cmd_node`) |
+| `/cmd_vel` | `geometry_msgs/Twist` | Speed (m/s) command to the ESP; `ackermann_cmd_node` forwards Nav2's smoothed velocity here, the ESP maps it to drive percent |
 | `/drive_cmd` | `std_msgs/Float32` | Drive in percent of the controller stick range, -100..100 (+ forward) |
-| `/steer_cmd` | `car_interfaces/SteerCmd` | Target steering angle in rad (+ left) |
-| `/cmd_vel` | `geometry_msgs/Twist` | Speed (m/s) and yaw rate (rad/s) command to the ESP |
+| `/steer_cmd` | `car_interfaces/SteerCmd` | Target steering angle in rad (+ left); from Nav2 via the bicycle model in `ackermann_cmd_node` |
 | `/drive_mode` | `car_interfaces/DriveMode` | `1` = remote controller, `2` = autonomy |
 | `/lights_cmd` | `car_interfaces/LightsCmd` | Front lamps and rear bars: colours, indicators, hazard, brake/reverse flags |
 | `/horn_cmd` | `std_msgs/Bool` | Horn |
@@ -104,6 +109,80 @@ The car opens its own Wi-Fi access point on boot (no internet access through it)
 
 Check with `ping 10.42.0.1`.
 
+## Development container
+
+The quickest way to write code for the car. Requires Docker and VS Code with the *Dev Containers* extension.
+
+1. Open this folder in VS Code and run *Dev Containers: Reopen in Container* (the first build needs internet).
+2. Connect your laptop to the `KITT` Wi-Fi.
+3. In a terminal inside the container:
+
+```bash
+ros2 topic list                       # the car's topics should show up
+ros2 topic echo /steer_state
+ros2 topic hz /preview/left/compressed
+```
+
+The container uses host networking and Fast DDS with the car as a static discovery peer
+(`ROS_STATIC_PEERS=10.42.0.1`, `ROS_DOMAIN_ID=0`). To use another address or domain, set `KITT_IP` /
+`ROS_DOMAIN_ID` in your host environment before opening the container. Host networking works on Linux and on
+Windows with Docker running inside WSL2; Docker Desktop is not supported.
+
+Your packages go into `student_ws/src`; it is built once on container creation (`colcon build` afterwards) and
+sourced automatically in new terminals. The `car_interfaces` messages are already available:
+
+```python
+from car_interfaces.msg import LightsCmd, DriveMode
+```
+
+If `ros2 topic list` stays empty, check `ping 10.42.0.1`, that your firewall allows UDP, and that no VPN is
+routing `10.42.0.0/24`.
+
+## Examples
+
+Small, commented scripts in [examples/](examples) to copy from (run them inside the dev container, no build needed):
+
+| Script | What it shows |
+|--------|---------------|
+| [camera.py](examples/camera.py) | Subscribe to the camera preview, decode the JPEG with OpenCV, save the latest frame to `examples/out/frame.jpg` |
+| [obstacles.py](examples/obstacles.py) | Read Nav2's local costmap and print the nearest obstacle ahead / left / right in metres |
+| [goal.py](examples/goal.py) | Send a navigation goal (`python3 examples/goal.py 2.0 0.5 --yaw 90`) and follow its progress |
+| [lights.py](examples/lights.py) | Headlights, indicators, hazard, brake/reverse, any colour, horn |
+| [drive_mode.py](examples/drive_mode.py) | Switch between remote controller and autonomy (needed before the car follows goals) |
+
+The car only moves in drive mode `autonomy`, and the remote controller always takes over, so keep it within reach
+when you send goals. `camera.py` needs the cameras running and `obstacles.py`/`goal.py` the `nav` pipeline on the car.
+
+### Working with recorded bags
+
+Put a rosbag2 (MCAP) directory into [bags/](bags). Two ways to use it inside the dev container:
+
+**Replay it as if it were the car** – all examples and your own nodes then run unchanged:
+
+```bash
+scripts/play_bag.sh bags/<name> --loop --topics /tf /tf_static /preview/left/compressed   # terminal 1
+source scripts/kitt_env.sh replay                                                          # terminal 2
+python3 examples/camera.py
+source scripts/kitt_env.sh live                                                            # back to the car
+```
+
+The bag is published in an isolated DDS domain (77, localhost only), so replaying can never reach the car. Extra
+arguments go to `ros2 bag play` (`--rate 0.5`, `--start-offset 30`, ...). Only topics that were recorded exist, and
+the raw stereo pair is heavy, so play just what you need with `--topics`.
+
+**Read it offline from Python** – [bag_reader.py](examples/bag_reader.py) needs no running ROS graph:
+
+```bash
+python3 examples/bag_reader.py info   bags/<name>                          # topics, types, counts, rates
+python3 examples/bag_reader.py echo   bags/<name> /steer_state -n 3
+python3 examples/bag_reader.py images bags/<name> /preview/left/compressed --every 30
+python3 examples/bag_reader.py odom   bags/<name> --out examples/out/odom.csv
+```
+
+and in your own code: `from bag_reader import read_messages, image_to_bgr`.
+
+For a ready-made RViz bag viewer on the host see [RViz2 in Docker](#rviz2-in-docker-host-without-the-dev-container).
+
 ## Foxglove (recommended)
 
 1. Open [Foxglove](https://app.foxglove.dev) (web) or the desktop app.
@@ -111,10 +190,30 @@ Check with `ping 10.42.0.1`.
 3. *Layouts → Import from file…* → [foxglove/bmw_kitt.layout.json](foxglove/bmw_kitt.layout.json).
 
 The layout has a top-down **Navigation** tab (costmaps, plan, footprint, velocity plot) and a 3D SLAM/nvblox tab,
-both with a goal pose tool that publishes `/goal_pose`, plus left/right/back cameras, diagnostics, ESP state
+both with a goal pose tool that publishes `/goal_pose`, plus left/right/rear cameras, diagnostics, ESP state
 (steering, controller, lights) and buttons to publish lights, horn, drive mode, drive and steering.
 
-## RViz2 in Docker
+## RViz2
+
+RViz2 is installed in the dev container and shows the same things as Foxglove (costmaps, plan, footprint, SLAM
+path, camera preview, goal tool) with the layout in [rviz/kitt.rviz](rviz/kitt.rviz):
+
+```bash
+scripts/rviz.sh
+```
+
+Pick **2D Goal Pose** in the toolbar and click on the map to send a goal (the car must be in drive mode `autonomy`,
+see `examples/drive_mode.py`). The nvblox displays and TF are off by default; tick them in the Displays panel.
+`File → Save Config` writes your changes back to `rviz/kitt.rviz`. In a terminal switched to a bag replay
+(`source scripts/kitt_env.sh replay`) RViz shows the replay instead of the car.
+
+The window opens on your host through the X11 socket (`/tmp/.X11-unix`, `DISPLAY`), rendered in software:
+
+- **Windows (WSL2):** works out of the box (WSLg).
+- **Linux:** run `xhost +local:` on the host once per login if RViz cannot connect to the display.
+- If `DISPLAY` is empty in the container, start VS Code from a terminal where `echo $DISPLAY` shows a value.
+
+## RViz2 in Docker (host, without the dev container)
 
 Requires Docker. The helper scripts are currently written for **Windows with WSL2 + WSLg**; on native Linux you
 have to adapt the X11/Wayland options in the `docker run` calls.
