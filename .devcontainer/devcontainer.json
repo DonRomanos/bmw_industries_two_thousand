@@ -1,0 +1,41 @@
+{
+  "name": "BMW Industries Two Thousand (KITT)",
+  "build": {
+    "dockerfile": "../docker/student/Dockerfile",
+    "context": ".."
+  },
+  // Host networking: DDS discovery with the car needs a real route to 10.42.0.1.
+  // Works on Linux and on Windows/WSL2 with Docker running inside WSL; Docker Desktop is not supported.
+  // The X11 socket directory lets RViz2 open windows on the host (WSLg or an X11/Xwayland desktop).
+  "runArgs": ["--network=host", "-v", "/tmp/.X11-unix:/tmp/.X11-unix"],
+  "containerEnv": {
+    "ROS_DOMAIN_ID": "${localEnv:ROS_DOMAIN_ID:0}",
+    "ROS_STATIC_PEERS": "${localEnv:KITT_IP:10.42.0.1}",
+    "KITT_IP": "${localEnv:KITT_IP:10.42.0.1}",
+    "KITT_STUDENT_WS": "${containerWorkspaceFolder}/student_ws",
+    "DISPLAY": "${localEnv:DISPLAY:0}",
+    "QT_QPA_PLATFORM": "xcb",
+    "QT_X11_NO_MITSHM": "1",
+    "LIBGL_ALWAYS_SOFTWARE": "1"
+  },
+  "remoteUser": "ubuntu",
+  "postCreateCommand": "mkdir -p student_ws/src && bash -c 'source /opt/ros/lyrical/setup.bash && source /opt/kitt_ws/install/setup.bash && cd student_ws && colcon build'",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-vscode.cpptools",
+        "ms-iot.vscode-ros",
+        "redhat.vscode-yaml",
+        "charliermarsh.ruff"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/bin/python3",
+        "python.analysis.extraPaths": [
+          "/opt/ros/lyrical/lib/python3.14/site-packages",
+          "/opt/kitt_ws/install/car_interfaces/lib/python3.14/site-packages"
+        ]
+      }
+    }
+  }
+}

@@ -453,7 +453,8 @@
       "mode": "fit",
       "imageMode": {
         "imageTopic": "/preview/left/compressed",
-        "calibrationTopic": null
+        "calibrationTopic": null,
+        "rotation": 0
       },
       "foxglovePanelTitle": "Left camera"
     },
@@ -469,7 +470,8 @@
       "mode": "fit",
       "imageMode": {
         "imageTopic": "/preview/right/compressed",
-        "calibrationTopic": null
+        "calibrationTopic": null,
+        "rotation": 0
       },
       "foxglovePanelTitle": "Right camera"
     },
@@ -481,13 +483,14 @@
       "smooth": false,
       "flipHorizontal": false,
       "flipVertical": false,
-      "rotation": 0,
+      "rotation": 180,
       "mode": "fit",
       "imageMode": {
         "imageTopic": "/back_camera/image/compressed",
-        "calibrationTopic": null
+        "calibrationTopic": null,
+        "rotation": 180
       },
-      "foxglovePanelTitle": "Back camera"
+      "foxglovePanelTitle": "Rear camera"
     },
     "DiagnosticSummary!diag": {
       "minLevel": 0,
@@ -667,17 +670,38 @@
         "/local_costmap/costmap": {
           "visible": true,
           "colorMode": "costmap",
-          "alpha": 0.6
+          "alpha": 0.3
         },
         "/global_costmap/costmap": {
           "visible": true,
           "colorMode": "costmap",
-          "alpha": 0.4
+          "alpha": 0.25
         },
         "/local_costmap/published_footprint": {
           "visible": true,
           "color": "#ff4d4d",
           "lineWidth": 0.05
+        },
+        "/nav_debug/lethal_local": {
+          "visible": true,
+          "colorMode": "custom",
+          "minColor": "#00000000",
+          "maxColor": "#ff2020ff",
+          "unknownColor": "#00000000",
+          "invalidColor": "#00000000",
+          "alpha": 1.0
+        },
+        "/nav_debug/lethal_global": {
+          "visible": true,
+          "colorMode": "custom",
+          "minColor": "#00000000",
+          "maxColor": "#ff8800d0",
+          "unknownColor": "#00000000",
+          "invalidColor": "#00000000",
+          "alpha": 1.0
+        },
+        "/nav_debug/markers": {
+          "visible": true
         }
       },
       "layers": {
@@ -745,6 +769,154 @@
       "sidebarDimension": 0,
       "foxglovePanelTitle": "Nav2 velocity command"
     },
+    "3D!debug": {
+      "followTf": "odom",
+      "followMode": "follow-none",
+      "cameraState": {
+        "perspective": false,
+        "distance": 5,
+        "phi": 0,
+        "thetaOffset": 0,
+        "targetOffset": [
+          0,
+          0,
+          0
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "targetOrientation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "fovy": 45,
+        "near": 0.5,
+        "far": 5000
+      },
+      "scene": {
+        "backgroundColor": "#15181e",
+        "enableStats": false
+      },
+      "transforms": {
+        "showLabel": false
+      },
+      "topics": {
+        "/visual_slam/tracking/slam_path": {
+          "visible": true,
+          "lineWidth": 0.06,
+          "color": "#2ee59d"
+        },
+        "/visual_slam/tracking/vo_path": {
+          "visible": true,
+          "lineWidth": 0.03,
+          "color": "#4aa8ff"
+        },
+        "/plan": {
+          "visible": true,
+          "lineWidth": 0.08,
+          "color": "#ffcf33"
+        },
+        "/nvblox_node/static_occupancy_grid": {
+          "visible": false
+        },
+        "/nvblox_node/static_esdf_pointcloud": {
+          "visible": false
+        },
+        "/local_costmap/costmap": {
+          "visible": true,
+          "colorMode": "costmap",
+          "alpha": 0.2
+        },
+        "/global_costmap/costmap": {
+          "visible": false
+        },
+        "/local_costmap/published_footprint": {
+          "visible": true,
+          "color": "#ff4d4d",
+          "lineWidth": 0.05
+        },
+        "/nav_debug/lethal_local": {
+          "visible": true,
+          "colorMode": "custom",
+          "minColor": "#00000000",
+          "maxColor": "#ff2020ff",
+          "unknownColor": "#00000000",
+          "invalidColor": "#00000000",
+          "alpha": 1.0
+        },
+        "/nav_debug/lethal_global": {
+          "visible": true,
+          "colorMode": "custom",
+          "minColor": "#00000000",
+          "maxColor": "#ff8800d0",
+          "unknownColor": "#00000000",
+          "invalidColor": "#00000000",
+          "alpha": 1.0
+        },
+        "/nav_debug/markers": {
+          "visible": true
+        }
+      },
+      "layers": {
+        "grid": {
+          "layerId": "foxglove.Grid",
+          "visible": true,
+          "frameId": "odom",
+          "size": 30,
+          "divisions": 30,
+          "lineWidth": 1,
+          "color": "#2b3a4a",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "order": 1
+        },
+        "urdf": {
+          "layerId": "foxglove.Urdf",
+          "visible": true,
+          "sourceType": "topic",
+          "topic": "/robot_description",
+          "order": 2
+        }
+      },
+      "publish": {
+        "type": "pose",
+        "poseTopic": "/goal_pose",
+        "pointTopic": "/clicked_point",
+        "poseEstimateTopic": "/initialpose",
+        "poseEstimateXDeviation": 0.5,
+        "poseEstimateYDeviation": 0.5,
+        "poseEstimateThetaDeviation": 0.26
+      },
+      "foxglovePanelTitle": "Debug: real obstacles, distances, why we stopped"
+    },
+    "Log!rosout": {
+      "topicToRender": "/rosout",
+      "minLogLevel": 3,
+      "searchTerms": [],
+      "nameFilter": {},
+      "foxglovePanelTitle": "Nav2 warnings"
+    },
+    "RawMessages!nav_status": {
+      "topicPath": "/nav_debug/status",
+      "diffEnabled": false,
+      "diffMethod": "custom",
+      "diffTopicPath": "",
+      "showFullMessageForDiff": false,
+      "expansion": "all",
+      "foxglovePanelTitle": "Nav debug status"
+    },
     "Tab!map": {
       "activeTabIdx": 0,
       "tabs": [
@@ -755,6 +927,20 @@
             "first": "3D!nav",
             "second": "Plot!nav_cmd",
             "splitPercentage": 78.0
+          }
+        },
+        {
+          "title": "Debug",
+          "layout": {
+            "direction": "column",
+            "first": "3D!debug",
+            "second": {
+              "direction": "row",
+              "first": "Log!rosout",
+              "second": "RawMessages!nav_status",
+              "splitPercentage": 62.0
+            },
+            "splitPercentage": 72.0
           }
         },
         {
