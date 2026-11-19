@@ -24,7 +24,29 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         ros-lyrical-rosbag2-storage-mcap \
         ros-lyrical-rviz2 \
         ros-lyrical-compressed-image-transport \
-        mesa-utils libgl1-mesa-dri libxcb-cursor0 \
+        ros-lyrical-ros-gz \
+        ros-lyrical-navigation2 \
+        ros-lyrical-nav2-bringup \
+        ros-lyrical-nav2-mppi-controller \
+        ros-lyrical-nav2-smac-planner \
+        ros-lyrical-nav2-rotation-shim-controller \
+        ros-lyrical-nav2-velocity-smoother \
+        ros-lyrical-nav2-collision-monitor \
+        ros-lyrical-nav2-rviz-plugins \
+        ros-lyrical-robot-localization \
+        ros-lyrical-robot-state-publisher \
+        ros-lyrical-joint-state-publisher \
+        ros-lyrical-xacro \
+        ros-lyrical-twist-mux \
+        ros-lyrical-teleop-twist-keyboard \
+        ros-lyrical-pointcloud-to-laserscan \
+        ros-lyrical-rtabmap-ros \
+        ros-lyrical-image-proc \
+        ros-lyrical-stereo-image-proc \
+        ros-lyrical-depth-image-proc \
+        ros-lyrical-foxglove-bridge \
+        mesa-utils mesa-utils-bin libgl1-mesa-dri libegl1 libglx-mesa0 libxcb-cursor0 \
+        mesa-vulkan-drivers libvulkan1 vulkan-tools xterm \
         python3-colcon-common-extensions \
         python3-opencv python3-numpy python3-pip python3-pyqt6 \
         git sudo nano iputils-ping iproute2 \
@@ -36,6 +58,13 @@ COPY ros_ws/src/car_interfaces /opt/bitt_ws/src/car_interfaces
 RUN bash -c "source /opt/ros/lyrical/setup.bash && cd /opt/bitt_ws && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release" \
     && rm -rf /opt/bitt_ws/build /opt/bitt_ws/log
 
+# Gazebo simulation of the car (ros2 launch kitt_sim sim.launch.py): the real car's Nav2 config
+# with simulated ESP32, odometry and cameras. Scenarios are mounted at runtime (scenarios/).
+COPY docker/student/sim/kitt_sim /opt/kitt_sim_ws/src/kitt_sim
+RUN bash -c "source /opt/ros/lyrical/setup.bash && source /opt/bitt_ws/install/setup.bash \
+        && cd /opt/kitt_sim_ws && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release" \
+    && rm -rf /opt/kitt_sim_ws/build /opt/kitt_sim_ws/log
+
 # The car's ROS graph is reached through unicast discovery (Wi-Fi multicast is unreliable); the
 # devcontainer sets ROS_STATIC_PEERS to the car's address.
 ENV RMW_IMPLEMENTATION=rmw_fastrtps_cpp
@@ -45,9 +74,12 @@ RUN echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu && chmod 0440 /
 
 # Source the ROS workspaces at the very top of .bashrc: Ubuntu's stock .bashrc returns early for
 # non-interactive shells (VS Code tasks, `docker exec ... bash -ic`), which would skip lines appended below it.
+COPY docker/student/gpu-env.sh /etc/kitt/gpu-env.sh
 RUN printf '%s\n' \
+        'source /etc/kitt/gpu-env.sh' \
         'source /opt/ros/lyrical/setup.bash' \
         'source /opt/bitt_ws/install/setup.bash' \
+        'source /opt/kitt_sim_ws/install/setup.bash' \
         '[ -f "$BITT_STUDENT_WS/install/setup.bash" ] && source "$BITT_STUDENT_WS/install/setup.bash"' \
         | cat - /home/ubuntu/.bashrc > /tmp/bashrc && mv /tmp/bashrc /home/ubuntu/.bashrc \
     && chown ubuntu:ubuntu /home/ubuntu/.bashrc

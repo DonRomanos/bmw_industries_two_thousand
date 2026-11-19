@@ -1,0 +1,22 @@
+# 640x360 stereo calibration of the 60 mm rig (2026-11-12, 8x6 corners, 25 mm squares, 106 pairs, stereo RMS 0.33 px).
+# Recomputed offline from calibration/stereo_twin_cameras with left/right exchanged; sensor 0 = left.
+image_width: 640
+image_height: 360
+camera_name: narrow_stereo/right
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [548.91070881, 0.00000000, 317.49760240, 0.00000000, 548.47709055, 183.55093978, 0.00000000, 0.00000000, 1.00000000]
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [-0.06250386, 0.12291333, -0.00214733, -0.00293466, 0.00000000]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [0.99992079, -0.00943776, -0.00832718, 0.00942876, 0.99995492, -0.00111971, 0.00833737, 0.00104110, 0.99996470]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [570.07593487, 0.00000000, 331.98053360, -34.25937369, 0.00000000, 570.07593487, 184.37359810, 0.00000000, 0.00000000, 0.00000000, 1.00000000, 0.00000000]

@@ -6,3 +6,6 @@ student_ws/log/
 examples/out/
 __pycache__/
 *.pyc
+.devcontainer/gpu.generated.yml
+scenarios/*
+!scenarios/.gitkeep
