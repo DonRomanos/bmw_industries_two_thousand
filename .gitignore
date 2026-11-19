@@ -4,3 +4,5 @@ student_ws/build/
 student_ws/install/
 student_ws/log/
 examples/out/
+__pycache__/
+*.pyc

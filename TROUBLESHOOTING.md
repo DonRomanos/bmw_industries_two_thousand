@@ -28,7 +28,7 @@ will work until this is fixed).
   so your OS may warn about it or switch back to another network: tell it to stay connected.
 - Your laptop must get an address `10.42.0.x`: `ip addr` (Windows: `ipconfig`). No address means DHCP on the car
   has not answered; wait a minute after the car booted.
-- The car is `10.42.0.1`. If you changed it, set `KITT_IP` on your host before opening the container.
+- The car is `10.42.0.1`. If you changed it, set `BITT_IP` on your host before opening the container.
 - The car boots its own access point after a minute or so. No `KITT` network at all means the Jetson is off or
   still booting, or it is connected to another Wi-Fi: ask your instructors.
 - A VPN or proxy client can capture `10.42.0.0/24`; disconnect it while working with the car.
@@ -42,8 +42,8 @@ will work until this is fixed).
    (`kitt-pipeline` service). Ask your instructors, or check `ros2 topic list` again after a minute.
 2. **Same domain?** The car uses domain `0`; check `echo $ROS_DOMAIN_ID`. If you set `ROS_DOMAIN_ID` on your host
    it is passed into the container.
-3. **Still in replay mode?** A terminal that ran `source scripts/kitt_env.sh replay` only sees the bag player.
-   Run `source scripts/kitt_env.sh live` or open a new terminal.
+3. **Still in replay mode?** A terminal that ran `source scripts/bitt_env.sh replay` only sees the bag player.
+   Run `source scripts/bitt_env.sh live` or open a new terminal.
 4. **Host networking.** The container needs `--network=host` (already set in `.devcontainer/devcontainer.json`).
    It works on Linux and on Windows with Docker running inside WSL2. Docker Desktop and the default WSL2 NAT mode do
    not work; for WSL2 use mirrored networking in `%UserProfile%\.wslconfig`:
@@ -113,7 +113,7 @@ of the messages. `doctor.py` reports `clock difference to the car`.
 ## Bag replay
 
 - `scripts/play_bag.sh` publishes in its own isolated domain with shared memory only. Terminals you want to see
-  it in need `source scripts/kitt_env.sh replay`; go back with `source scripts/kitt_env.sh live`.
+  it in need `source scripts/bitt_env.sh replay`; go back with `source scripts/bitt_env.sh live`.
 - `doctor.py` in a replay terminal checks the replayed topics and skips the network and clock checks.
 - Only topics that were recorded exist. Check with `python3 examples/bag_reader.py info bags/<name>`.
 - Playing the raw stereo images needs a lot of CPU and memory: pass `--topics` to play only what you need.
@@ -124,5 +124,5 @@ of the messages. `doctor.py` reports `clock difference to the car`.
 - Packages you install with `sudo apt-get install` are gone when the container is rebuilt; put what you need in
   your own Dockerfile layer instead.
 - `ros2` or `car_interfaces` not found: open a new terminal (the workspaces are sourced from `~/.bashrc`) or run
-  `source /opt/ros/lyrical/setup.bash && source /opt/kitt_ws/install/setup.bash`. After building your own
+  `source /opt/ros/lyrical/setup.bash && source /opt/bitt_ws/install/setup.bash`. After building your own
   workspace, `source student_ws/install/setup.bash`.

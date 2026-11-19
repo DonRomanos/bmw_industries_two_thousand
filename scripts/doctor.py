@@ -6,7 +6,7 @@
 Checks, in order: ROS environment, route and ping to the car, ROS discovery, data flow of the important topics,
 clock difference to the car and the Nav2 action server. Every failing check prints a hint; TROUBLESHOOTING.md
 explains the fixes. Exit code 1 if a check failed (`warn` means something optional is missing).
-In a terminal switched to bag replay (`source scripts/kitt_env.sh replay`) the network and clock checks are
+In a terminal switched to bag replay (`source scripts/bitt_env.sh replay`) the network and clock checks are
 skipped, so it also tells you whether play_bag.sh is working.
 """
 import argparse
@@ -172,11 +172,11 @@ def check_ros(seconds, replay):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument('--ip', default=os.environ.get('KITT_IP', '10.42.0.1'))
+    p.add_argument('--ip', default=os.environ.get('BITT_IP', '10.42.0.1'))
     p.add_argument('--seconds', type=float, default=5.0, help='how long to measure the data streams')
     args = p.parse_args()
 
-    # kitt_env.sh replay selects shared-memory-only transport
+    # bitt_env.sh replay selects shared-memory-only transport
     replay = os.environ.get('FASTDDS_BUILTIN_TRANSPORTS') == 'SHM'
     reachable = True
 
@@ -188,7 +188,7 @@ def main():
         report('ok', f'live mode: domain {domain}, static peer {peers or "none"}')
         if peers != args.ip:
             report('warn', f"ROS_STATIC_PEERS is '{peers}', not the car ({args.ip})",
-                   f'run: source scripts/kitt_env.sh live (see "Ping works but no topics" in {DOC})')
+                   f'run: source scripts/bitt_env.sh live (see "Ping works but no topics" in {DOC})')
         print('Network')
         reachable = check_network(args.ip)
 
