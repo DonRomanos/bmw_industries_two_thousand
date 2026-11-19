@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Replay a recorded rosbag2 (see record_bag.sh) in RViz2 inside the docker/rviz container (WSL2 + WSLg).
+# Replay a recorded rosbag2 (see record_bag.sh) in RViz2 inside the student image (docker/student/Dockerfile, the
+# same image as the dev container) from the host (WSL2 + WSLg).
 #   scripts/view_bag.sh [bags/<name>] [--rate 1.0] [--no-images] [--loop] [--partial] [--no-cloud] [--recompute-cloud]
 #
 # Shows the whole recorded odometry path at once, plus the robot/TF moving while the bag plays,
@@ -11,7 +12,7 @@
 # --partial uses only the complete .mcap files of a bag that was not copied completely.
 # The container uses its own isolated DDS domain, so it does not touch the Jetson's ROS graph.
 # The scripts and rviz config in docker/rviz are mounted into the container, so editing them needs no
-# rebuild; the image is only rebuilt when it is missing, Dockerfile.replay changed or REBUILD=1.
+# rebuild; the image is only rebuilt when it is missing, the student Dockerfile changed or REBUILD=1.
 # RViz's File > Save Config (Ctrl+S) writes the panel layout back to docker/rviz/bag.rviz.
 # Set GPU=1 to use the WSL GPU for OpenGL instead of software rendering, and
 # BASE_IMAGE=<registry mirror>/ros:lyrical-ros-base if Docker Hub is unreachable.
@@ -54,17 +55,18 @@ if [ "$PARTIAL" = 0 ]; then
 fi
 echo "Bag: $BAG"
 
-IMAGE=bmw-kitt-rviz-replay
+IMAGE=bmw-kitt-student
+DOCKERFILE=$ROOT/docker/student/Dockerfile
 # Building contacts the registry even when all layers are cached (it fails behind a proxy), so only
-# build if the image is missing, REBUILD=1 is set, or Dockerfile.replay changed since it was built.
+# build if the image is missing, REBUILD=1 is set, or the Dockerfile changed since it was built.
 need_build=1
 if [ "${REBUILD:-0}" != 1 ] && created=$(docker image inspect -f '{{.Created}}' "$IMAGE" 2>/dev/null); then
     stamp=$(mktemp); touch -d "$created" "$stamp"
-    [ -z "$(find "$ROOT/docker/rviz/Dockerfile.replay" -newer "$stamp" -print -quit)" ] && need_build=0
+    [ -z "$(find "$DOCKERFILE" -newer "$stamp" -print -quit)" ] && need_build=0
     rm -f "$stamp"
 fi
 if [ "$need_build" = 1 ]; then
-    docker build ${BASE_IMAGE:+--build-arg BASE_IMAGE=$BASE_IMAGE} -f "$ROOT/docker/rviz/Dockerfile.replay" -t "$IMAGE" "$ROOT/docker/rviz"
+    docker build ${BASE_IMAGE:+--build-arg BASE_IMAGE=$BASE_IMAGE} -f "$DOCKERFILE" -t "$IMAGE" "$ROOT"
 fi
 
 GPU_ARGS=(-e LIBGL_ALWAYS_SOFTWARE=1)

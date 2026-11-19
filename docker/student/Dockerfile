@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         ros-lyrical-ackermann-msgs \
         ros-lyrical-diagnostic-msgs \
         ros-lyrical-rosbag2 \
+        ros-lyrical-rosbag2-py \
         ros-lyrical-rosbag2-storage-mcap \
         ros-lyrical-rviz2 \
         ros-lyrical-compressed-image-transport \

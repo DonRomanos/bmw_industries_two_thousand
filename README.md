@@ -16,7 +16,7 @@ What is in here:
 | [scripts/play_bag.sh](scripts/play_bag.sh), [scripts/kitt_env.sh](scripts/kitt_env.sh) | Replay a bag as the car inside the dev container / switch a terminal between car and replay |
 | [ros_ws/src/car_interfaces/](ros_ws/src/car_interfaces) | The car's message definitions (lights, steering, drive mode, ...), built into the dev container |
 | [foxglove/bmw_kitt.layout.json](foxglove/bmw_kitt.layout.json) | Foxglove layout: navigation view, 3D SLAM view, cameras, diagnostics, ESP state, buttons for lights/horn/drive |
-| [docker/rviz/](docker/rviz) | RViz2 containers: live view of the car (`run.sh`) and bag replay (`Dockerfile.replay`) |
+| [docker/rviz/](docker/rviz) | Bag replay assets (RViz2 layout, path/cloud/visualisation helpers) used by `scripts/view_bag.sh` |
 | [scripts/view_bag.sh](scripts/view_bag.sh) | Replay a recorded bag in RViz2 |
 | [bags/](bags) | Put your rosbag2 directories here (contents are git-ignored) |
 
@@ -215,17 +215,10 @@ The window opens on your host through the X11 socket (`/tmp/.X11-unix`, `DISPLAY
 
 ## RViz2 in Docker (host, without the dev container)
 
-Requires Docker. The helper scripts are currently written for **Windows with WSL2 + WSLg**; on native Linux you
-have to adapt the X11/Wayland options in the `docker run` calls.
-
-### Live view of the car
-
-```bash
-docker/rviz/run.sh [CAR_IP]        # default 10.42.0.1, builds the image on first use
-```
-
-The image contains RViz2 with the nvblox and cuVSLAM plugins. DDS multicast is unreliable over Wi-Fi, so the car is
-added as a static discovery peer. Set `GPU=1` to use the WSL GPU for rendering.
+Requires Docker. The helper script is currently written for **Windows with WSL2 + WSLg**; on native Linux you
+have to adapt the X11/Wayland options in its `docker run` call. It uses the same image as the dev container
+([docker/student/Dockerfile](docker/student/Dockerfile)), so there is only one image to build. To see the live car,
+use the dev container and `scripts/rviz.sh` (see [RViz2](#rviz2)).
 
 ### Replay a recorded bag
 
