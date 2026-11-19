@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         ros-lyrical-compressed-image-transport \
         mesa-utils libgl1-mesa-dri libxcb-cursor0 \
         python3-colcon-common-extensions \
-        python3-opencv python3-numpy python3-pip \
+        python3-opencv python3-numpy python3-pip python3-pyqt6 \
         git sudo nano iputils-ping iproute2 \
     && rm -rf /var/lib/apt/lists/*
 
