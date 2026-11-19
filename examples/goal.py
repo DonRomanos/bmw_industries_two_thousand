@@ -9,7 +9,7 @@ By default x (forward) and y (left) are in metres relative to where the car is n
 counter-clockwise) is relative to its current heading. The car has Ackermann steering: it cannot turn on the
 spot, so very close or sideways goals may fail. Ctrl-C cancels the goal.
 
-The car only moves in drive mode 2 (see examples/drive_mode.py), and the remote controller always takes over.
+The car's pipeline switches to autonomy by itself while Nav2 is driving, and the remote controller always takes over.
 Needs the `nav` pipeline on the car.
 """
 import argparse

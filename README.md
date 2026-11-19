@@ -11,7 +11,8 @@ What is in here:
 | [.devcontainer/](.devcontainer), [docker/student/](docker/student) | Development container with ROS 2 and the car's message types, preconfigured to reach the car |
 | [student_ws/](student_ws) | Your colcon workspace (put your packages in `student_ws/src`) |
 | [rviz/kitt.rviz](rviz/kitt.rviz), [scripts/rviz.sh](scripts/rviz.sh) | RViz2 layout and launcher for the dev container |
-| [examples/](examples) | Example scripts: camera, obstacles, navigation goals, lights, drive mode, bag reader |
+| [examples/](examples) | Example scripts: camera, obstacles, navigation goals, lights, bag reader |
+| [scripts/doctor.py](scripts/doctor.py), [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Connection check for the car and fixes for common problems |
 | [scripts/play_bag.sh](scripts/play_bag.sh), [scripts/kitt_env.sh](scripts/kitt_env.sh) | Replay a bag as the car inside the dev container / switch a terminal between car and replay |
 | [ros_ws/src/car_interfaces/](ros_ws/src/car_interfaces) | The car's message definitions (lights, steering, drive mode, ...), built into the dev container |
 | [foxglove/bmw_kitt.layout.json](foxglove/bmw_kitt.layout.json) | Foxglove layout: navigation view, 3D SLAM view, cameras, diagnostics, ESP state, buttons for lights/horn/drive |
@@ -86,7 +87,7 @@ Camera and map topics are large; use the `/preview/...` topics over Wi-Fi.
 | `/cmd_vel` | `geometry_msgs/Twist` | Speed (m/s) command to the ESP; `ackermann_cmd_node` forwards Nav2's smoothed velocity here, the ESP maps it to drive percent |
 | `/drive_cmd` | `std_msgs/Float32` | Drive in percent of the controller stick range, -100..100 (+ forward) |
 | `/steer_cmd` | `car_interfaces/SteerCmd` | Target steering angle in rad (+ left); from Nav2 via the bicycle model in `ackermann_cmd_node` |
-| `/drive_mode` | `car_interfaces/DriveMode` | `1` = remote controller, `2` = autonomy |
+| `/drive_mode` | `car_interfaces/DriveMode` | `1` = remote controller, `2` = autonomy; set by the car's pipeline, students do not publish it |
 | `/lights_cmd` | `car_interfaces/LightsCmd` | Front lamps and rear bars: colours, indicators, hazard, brake/reverse flags |
 | `/horn_cmd` | `std_msgs/Bool` | Horn |
 | `/jetson_heartbeat` | `std_msgs/Header` | 1 Hz heartbeat; autonomy stops if it is older than 3 s |
@@ -135,8 +136,8 @@ sourced automatically in new terminals. The `car_interfaces` messages are alread
 from car_interfaces.msg import LightsCmd, DriveMode
 ```
 
-If `ros2 topic list` stays empty, check `ping 10.42.0.1`, that your firewall allows UDP, and that no VPN is
-routing `10.42.0.0/24`.
+Run `scripts/doctor.py` to check the connection to the car step by step. If `ros2 topic list` stays empty, see
+[TROUBLESHOOTING.md](TROUBLESHOOTING.md).
 
 ## Examples
 
@@ -148,10 +149,9 @@ Small, commented scripts in [examples/](examples) to copy from (run them inside 
 | [obstacles.py](examples/obstacles.py) | Read Nav2's local costmap and print the nearest obstacle ahead / left / right in metres |
 | [goal.py](examples/goal.py) | Send a navigation goal (`python3 examples/goal.py 2.0 0.5 --yaw 90`) and follow its progress |
 | [lights.py](examples/lights.py) | Headlights, indicators, hazard, brake/reverse, any colour, horn |
-| [drive_mode.py](examples/drive_mode.py) | Switch between remote controller and autonomy (needed before the car follows goals) |
 
-The car only moves in drive mode `autonomy`, and the remote controller always takes over, so keep it within reach
-when you send goals. `camera.py` needs the cameras running and `obstacles.py`/`goal.py` the `nav` pipeline on the car.
+The car's pipeline switches it to autonomy by itself while Nav2 is driving, and the remote controller always takes
+over, so keep it within reach when you send goals. `camera.py` needs the cameras running and `obstacles.py`/`goal.py` the `nav` pipeline on the car.
 
 ### Working with recorded bags
 
@@ -202,8 +202,8 @@ path, camera preview, goal tool) with the layout in [rviz/kitt.rviz](rviz/kitt.r
 scripts/rviz.sh
 ```
 
-Pick **2D Goal Pose** in the toolbar and click on the map to send a goal (the car must be in drive mode `autonomy`,
-see `examples/drive_mode.py`). The nvblox displays and TF are off by default; tick them in the Displays panel.
+Pick **2D Goal Pose** in the toolbar and click on the map to send a goal (the car drives when Nav2 gets a goal; keep the
+remote controller within reach). The nvblox displays and TF are off by default; tick them in the Displays panel.
 `File → Save Config` writes your changes back to `rviz/kitt.rviz`. In a terminal switched to a bag replay
 (`source scripts/kitt_env.sh replay`) RViz shows the replay instead of the car.
 
