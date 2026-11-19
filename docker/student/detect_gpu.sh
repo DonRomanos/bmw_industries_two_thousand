@@ -34,7 +34,7 @@ fi
     echo "services:"
     echo "  student:"
     echo "    environment:"
-    echo "      KITT_HOST_GPU: \"$mode\""
+    echo "      BITT_HOST_GPU: \"$mode\""
     [ "$nvidia" = 1 ] && echo "      NVIDIA_DRIVER_CAPABILITIES: all" && echo "      NVIDIA_VISIBLE_DEVICES: all"
     [ "$mode" = wsl ] && echo "      LD_LIBRARY_PATH: /usr/lib/wsl/lib"
     if [ ${#dev_lines[@]} -gt 0 ]; then echo "    devices:"; printf '      - "%s"\n' "${dev_lines[@]}"; fi

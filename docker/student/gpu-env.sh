@@ -1,10 +1,10 @@
 # Sourced from ~/.bashrc: pick the best rendering backend the container can see for Gazebo, RViz2 and Vulkan.
 # Order: WSL2 GPU (/dev/dxg) > NVIDIA container runtime > DRM render node (AMD, Intel, nouveau) > software.
-# Override with KITT_RENDER=software|wsl|nvidia|dri before starting a terminal.
+# Override with BITT_RENDER=software|wsl|nvidia|dri before starting a terminal.
 
-kitt_pick_render() {
-    case "${KITT_RENDER:-auto}" in
-        software|wsl|nvidia|dri) echo "$KITT_RENDER"; return ;;
+bitt_pick_render() {
+    case "${BITT_RENDER:-auto}" in
+        software|wsl|nvidia|dri) echo "$BITT_RENDER"; return ;;
     esac
     if [ -e /dev/dxg ]; then echo wsl
     elif [ -e /usr/share/glvnd/egl_vendor.d/10_nvidia.json ] && [ -e /dev/nvidiactl ]; then echo nvidia
@@ -13,10 +13,10 @@ kitt_pick_render() {
     fi
 }
 
-KITT_RENDER_MODE=$(kitt_pick_render)
+BITT_RENDER_MODE=$(bitt_pick_render)
 unset LIBGL_ALWAYS_SOFTWARE GALLIUM_DRIVER MESA_LOADER_DRIVER_OVERRIDE __GLX_VENDOR_LIBRARY_NAME __EGL_VENDOR_LIBRARY_FILENAMES VK_ICD_FILENAMES
 
-case "$KITT_RENDER_MODE" in
+case "$BITT_RENDER_MODE" in
     wsl)
         export LD_LIBRARY_PATH="/usr/lib/wsl/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
         export GALLIUM_DRIVER=d3d12
@@ -30,5 +30,5 @@ case "$KITT_RENDER_MODE" in
         export LIBGL_ALWAYS_SOFTWARE=1
         ;;
 esac
-export KITT_RENDER_MODE
-unset -f kitt_pick_render
+export BITT_RENDER_MODE
+unset -f bitt_pick_render

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>kitt_sim</name>
+  <name>bitt_sim</name>
   <version>0.1.0</version>
   <description>Gazebo simulation of the BMW i8 ride-on with the real car's Nav2 configuration</description>
   <maintainer email="noreply@example.com">student-sim</maintainer>

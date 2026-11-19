@@ -2,7 +2,7 @@
 
 Everything the real car provides on the Jetson side is replaced by a simulation
 counterpart, everything else is the real configuration (config/ is a verbatim
-copy of kitt's sim_export):
+copy of the car project's sim_export):
 
     real car                                     simulation
     ----------------------------------------------------------------------------
@@ -11,13 +11,13 @@ copy of kitt's sim_export):
              odom -> base_link)
     IMX219 stereo + camera_info                  Gazebo cameras + sim_camera_info.py
     nvblox 2D slice for the costmaps             ObstacleLayer on the simulated depth cloud
-    Nav2 + ackermann_cmd_node                    unchanged (see nav2.launch.py in kitt)
+    Nav2 + ackermann_cmd_node                    unchanged (the car's nav2.launch.py)
 
 Usage:
-    ros2 launch kitt_sim sim.launch.py scenario:=parking_lot
-    ros2 launch kitt_sim sim.launch.py world:=/path/to/world.sdf gui:=false
+    ros2 launch bitt_sim sim.launch.py scenario:=parking_lot
+    ros2 launch bitt_sim sim.launch.py world:=/path/to/world.sdf gui:=false
 
-Scenarios are looked up in $KITT_SCENARIOS_DIR (default: <workspace>/scenarios).
+Scenarios are looked up in $BITT_SCENARIOS_DIR (default: <workspace>/scenarios).
 """
 
 import copy
@@ -36,7 +36,7 @@ from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
-PKG = 'kitt_sim'
+PKG = 'bitt_sim'
 MODEL = 'bmw_kitt'
 ODOM = ('odom', '/visual_slam/tracking/odometry')
 DEFAULT_SCENARIOS = '/workspaces/bmw_industries_two_thousand/scenarios'
@@ -60,7 +60,7 @@ def find_world(scenario, world):
         if not os.path.isfile(world):
             raise RuntimeError(f'world file not found: {world}')
         return os.path.abspath(world)
-    root = os.environ.get('KITT_SCENARIOS_DIR', DEFAULT_SCENARIOS)
+    root = os.environ.get('BITT_SCENARIOS_DIR', DEFAULT_SCENARIOS)
     candidates = [scenario, os.path.join(root, scenario),
                   os.path.join(root, scenario + '.sdf'),
                   os.path.join(root, 'i8_' + scenario + '.sdf')]
@@ -72,7 +72,7 @@ def find_world(scenario, world):
     available = sorted(os.path.basename(p) for p in glob.glob(os.path.join(root, '**', '*.sdf'),
                                                                 recursive=True))
     raise RuntimeError(
-        f"scenario '{scenario}' not found in {root} (set KITT_SCENARIOS_DIR or mount the "
+        f"scenario '{scenario}' not found in {root} (set BITT_SCENARIOS_DIR or mount the "
         f"scenarios folder). Available: {available or 'none'}")
 
 
@@ -94,7 +94,7 @@ def _inertial(mass, ixx, iyy, izz, xyz='0 0 0'):
 
 
 def gazebo_urdf(urdf_text, vehicle, calib):
-    """The kitt URDF has only fixed joints. Add what Gazebo needs to drive it:
+    """The car's URDF has only fixed joints. Add what Gazebo needs to drive it:
     inertials, driven rear wheels, steerable front wheels, the depth sensor and the plugins.
     The TF tree published on the ROS side stays the original (fixed) one."""
     root = ET.fromstring(urdf_text)
@@ -192,7 +192,7 @@ def gazebo_urdf(urdf_text, vehicle, calib):
 
 
 def nav2_params(vehicle):
-    """kitt's nav2_params.yaml with the nvblox costmap layer replaced by a stock obstacle layer
+    """The car's nav2_params.yaml with the nvblox costmap layer replaced by a stock obstacle layer
     on the simulated depth cloud (nvblox needs a Jetson/CUDA and the real stereo depth chain)."""
     with open(cfg('nav2_params.yaml')) as f:
         p = yaml.safe_load(f)
@@ -221,7 +221,7 @@ def nav2_params(vehicle):
         c['plugins'] = ['obstacle_layer' if x == 'nvblox_layer' else x for x in c['plugins']]
     p['bt_navigator']['ros__parameters']['default_nav_to_pose_bt_xml'] = cfg(
         'behavior_trees', 'navigate_to_pose_forward_only.xml')
-    out = os.path.join(tempfile.gettempdir(), 'kitt_sim_nav2_params.yaml')
+    out = os.path.join(tempfile.gettempdir(), 'bitt_sim_nav2_params.yaml')
     with open(out, 'w') as f:
         yaml.safe_dump(p, f)
     return out
@@ -274,7 +274,7 @@ def launch_setup(context):
         ])
 
     def node(package, executable, name=None, parameters=(), remappings=()):
-        # Nav2 executables get their executable name as node name (as in kitt's nav2.launch.py);
+        # Nav2 executables get their executable name as node name (as in the car's nav2.launch.py);
         # the python scripts name themselves.
         if name is None and not executable.endswith('.py'):
             name = executable
@@ -324,7 +324,7 @@ def launch_setup(context):
 def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument('scenario', default_value='parking_lot',
-                              description='scenario name inside $KITT_SCENARIOS_DIR'),
+                              description='scenario name inside $BITT_SCENARIOS_DIR'),
         DeclareLaunchArgument('world', default_value='',
                               description='path to a world .sdf (overrides scenario)'),
         DeclareLaunchArgument('gui', default_value='false',
