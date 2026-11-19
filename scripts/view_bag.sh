@@ -11,9 +11,10 @@
 # (seconds to a minute, cached in bags/.cache); --no-cloud skips that, --recompute-cloud forces it.
 # --partial uses only the complete .mcap files of a bag that was not copied completely.
 # The container uses its own isolated DDS domain, so it does not touch the Jetson's ROS graph.
-# The scripts and rviz config in docker/rviz are mounted into the container, so editing them needs no
+# The helper scripts in scripts/view_bag and the RViz layout are mounted into the container, so editing them needs no
 # rebuild; the image is only rebuilt when it is missing, the student Dockerfile changed or REBUILD=1.
-# RViz's File > Save Config (Ctrl+S) writes the panel layout back to docker/rviz/bag.rviz.
+# The layout is the same as for the live view (rviz/bitt.rviz, see scripts/rviz.sh) with the nvblox and "Bag replay"
+# display groups switched on. RViz works on a temporary copy; keep layout changes with File > Save Config As... rviz/bitt.rviz.
 # Set GPU=1 to use the WSL GPU for OpenGL instead of software rendering, and
 # BASE_IMAGE=<registry mirror>/ros:lyrical-ros-base if Docker Hub is unreachable.
 
@@ -26,8 +27,11 @@ IMAGES=1
 LOOP=""
 PARTIAL=0
 CLOUD=auto
+usage() { sed -n '2,/^$/{/^$/d;s/^# \{0,1\}//p}' "$0"; }
+
 while [ $# -gt 0 ]; do
     case "$1" in
+        -h|--help) usage; exit 0 ;;
         --rate) RATE=$2; shift 2 ;;
         --images) IMAGES=1; shift ;;
         --no-images) IMAGES=0; shift ;;
@@ -35,7 +39,7 @@ while [ $# -gt 0 ]; do
         --partial) PARTIAL=1; shift ;;
         --no-cloud) CLOUD=0; shift ;;
         --recompute-cloud) CLOUD=1; shift ;;
-        -*) sed -n '4p' "$0" | sed 's/^# \{0,1\}//'; exit 1 ;;
+        -*) echo "Unknown option: $1"; sed -n '4p' "$0" | sed 's/^# \{0,1\}//'; echo "(--help for details)"; exit 1 ;;
         *) BAG=$1; shift ;;
     esac
 done
@@ -68,12 +72,18 @@ if [ -f /opt/bitt_ws/install/setup.bash ]; then
     export ROS_DOMAIN_ID=77 FASTDDS_BUILTIN_TRANSPORTS=SHM
     unset ROS_AUTOMATIC_DISCOVERY_RANGE ROS_STATIC_PEERS
     export IMAGES PARTIAL CLOUD ${LOOP:+LOOP}
-    export REPLAY_DIR=$ROOT/docker/rviz RVIZ_CONFIG=$ROOT/docker/rviz/bag.rviz CACHE_DIR=$ROOT/bags/.cache
+    export REPLAY_DIR=$ROOT/scripts/view_bag RVIZ_CONFIG=$ROOT/rviz/bitt.rviz CACHE_DIR=$ROOT/bags/.cache
     exec bash "$REPLAY_DIR/replay.sh" "$BAG" "$RATE"
 fi
 
 IMAGE=bmw-bitt-student
 DOCKERFILE=$ROOT/docker/student/Dockerfile
+if ! command -v docker >/dev/null 2>&1; then
+    echo "Neither the dev container nor Docker was found, so RViz2 cannot be started here."
+    echo "Either run this script inside the dev container (VS Code: Dev Containers: Reopen in Container),"
+    echo "or install Docker on this host (Windows: Docker inside WSL2, not Docker Desktop) and run it again."
+    exit 1
+fi
 # Building contacts the registry even when all layers are cached (it fails behind a proxy), so only
 # build if the image is missing, REBUILD=1 is set, or the Dockerfile changed since it was built.
 need_build=1
@@ -99,5 +109,5 @@ exec docker run --rm -it \
     -e ROS_DOMAIN_ID=77 -e ROS_AUTOMATIC_DISCOVERY_RANGE=LOCALHOST \
     -e IMAGES="$IMAGES" -e PARTIAL="$PARTIAL" -e CLOUD="$CLOUD" ${LOOP:+-e LOOP=1} \
     -v "$BAG":/bag:ro -v "$ROOT/bags/.cache":/cache \
-    -v "$ROOT/docker/rviz":/opt/replay:ro -v "$ROOT/docker/rviz/bag.rviz":/config/bag.rviz \
+    -v "$ROOT/scripts/view_bag":/opt/replay:ro -v "$ROOT/rviz/bitt.rviz":/config/bitt.rviz:ro \
     "${GPU_ARGS[@]}" "$IMAGE" bash /opt/replay/replay.sh /bag "$RATE"

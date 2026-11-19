@@ -1,9 +1,15 @@
 Visualization Manager:
-  Class: ""
+  Class: ''
   Displays:
+  - Class: rviz_common/Group
+    Name: Robot
+    Enabled: true
+    Displays:
     - Class: rviz_default_plugins/Grid
       Name: Grid
       Enabled: true
+      Plane Cell Count: 40
+      Color: 90; 90; 90
     - Class: rviz_default_plugins/TF
       Name: TF
       Enabled: false
@@ -14,6 +20,22 @@ Visualization Manager:
         Value: /robot_description
         Durability Policy: Transient Local
         Reliability Policy: Reliable
+    - Class: rviz_default_plugins/Odometry
+      Name: Odometry
+      Enabled: false
+      Topic:
+        Value: /visual_slam/tracking/odometry
+        Depth: 5
+        Reliability Policy: Best Effort
+      Keep: 1
+      Shape:
+        Value: Axes
+        Axes Length: 0.3
+        Axes Radius: 0.03
+  - Class: rviz_common/Group
+    Name: Navigation
+    Enabled: true
+    Displays:
     - Class: rviz_default_plugins/Map
       Name: Global costmap
       Enabled: true
@@ -45,38 +67,35 @@ Visualization Manager:
         Value: /plan
         Reliability Policy: Reliable
       Color: 0; 200; 0
+  - Class: rviz_common/Group
+    Name: SLAM
+    Enabled: true
+    Displays:
     - Class: rviz_default_plugins/Path
       Name: SLAM path
       Enabled: true
       Topic:
         Value: /visual_slam/tracking/slam_path
-        Reliability Policy: Reliable
+        Reliability Policy: Best Effort
       Color: 255; 255; 0
-    - Class: rviz_default_plugins/Odometry
-      Name: Odometry
-      Enabled: false
-      Topic:
-        Value: /visual_slam/tracking/odometry
-        Depth: 5
-        Reliability Policy: Reliable
-      Keep: 1
+      Line Style: Billboards
+      Line Width: 0.03
     - Class: rviz_default_plugins/PointCloud2
-      Name: nvblox ESDF slice
+      Name: cuVSLAM landmarks (many points)
       Enabled: false
       Topic:
-        Value: /nvblox_node/static_esdf_pointcloud
+        Value: /visual_slam/vis/landmarks_cloud
         Depth: 1
-        Reliability Policy: Reliable
-      Color Transformer: Intensity
-      Channel Name: intensity
-      Style: Boxes
-      Size (m): 0.05
-    - Class: rviz_default_plugins/Map
-      Name: nvblox occupancy grid
-      Enabled: false
-      Topic:
-        Value: /nvblox_node/static_occupancy_grid
-      Alpha: 0.6
+        Reliability Policy: Best Effort
+      Style: Points
+      Size (Pixels): 2
+      Color Transformer: FlatColor
+      Color: 255; 255; 0
+      Alpha: 0.5
+  - Class: rviz_common/Group
+    Name: Cameras
+    Enabled: false
+    Displays:
     - Class: rviz_default_plugins/Image
       Name: Left camera (preview)
       Enabled: true
@@ -84,18 +103,93 @@ Visualization Manager:
         Value: /preview/left/compressed
         Depth: 1
         Reliability Policy: Best Effort
+  - Class: rviz_common/Group
+    Name: nvblox
+    Enabled: false
+    Displays:
+    - Class: rviz_default_plugins/PointCloud2
+      Name: nvblox ESDF slice
+      Enabled: true
+      Topic:
+        Value: /nvblox_node/static_esdf_pointcloud
+        Depth: 1
+        Reliability Policy: Best Effort
+      Color Transformer: Intensity
+      Channel Name: intensity
+      Style: Boxes
+      Size (m): 0.05
+    - Class: rviz_default_plugins/Map
+      Name: nvblox occupancy grid
+      Enabled: true
+      Topic:
+        Value: /nvblox_node/static_occupancy_grid
+        Reliability Policy: Best Effort
+      Alpha: 0.6
+    - Class: rviz_default_plugins/Marker
+      Name: nvblox mesh (record_bag.sh --mesh)
+      Enabled: true
+      Topic:
+        Value: /nvblox_node/mesh_marker
+        Reliability Policy: Best Effort
+  - Class: rviz_common/Group
+    Name: Bag replay
+    Enabled: false
+    Displays:
+    - Class: rviz_default_plugins/Image
+      Name: Right camera (raw)
+      Enabled: false
+      Topic:
+        Value: /visual_slam/image_1
+        Depth: 1
+        Reliability Policy: Best Effort
+    - Class: rviz_default_plugins/Image
+      Name: Feature tracks (OpenCV)
+      Enabled: true
+      Topic:
+        Value: /replay/features
+        Depth: 1
+        Reliability Policy: Best Effort
+    - Class: rviz_default_plugins/Image
+      Name: Dashboard
+      Enabled: true
+      Topic:
+        Value: /replay/dashboard
+        Depth: 1
+        Reliability Policy: Best Effort
+    - Class: rviz_default_plugins/Path
+      Name: Recorded path (whole bag)
+      Enabled: true
+      Topic:
+        Value: /replay/path
+        Depth: 1
+        Durability Policy: Transient Local
+        Reliability Policy: Reliable
+      Color: 255; 170; 0
+      Line Style: Billboards
+      Line Width: 0.03
+    - Class: rviz_default_plugins/PointCloud2
+      Name: Cloud from stereo images (old bags)
+      Enabled: true
+      Topic:
+        Value: /replay/cloud
+        Depth: 1
+        Durability Policy: Transient Local
+        Reliability Policy: Reliable
+      Style: Points
+      Size (Pixels): 2
+      Color Transformer: RGB8
   Global Options:
     Fixed Frame: odom
     Frame Rate: 30
   Name: root
   Tools:
-    - Class: rviz_default_plugins/Interact
-    - Class: rviz_default_plugins/MoveCamera
-    - Class: rviz_default_plugins/FocusCamera
-    - Class: rviz_default_plugins/Measure
-    - Class: rviz_default_plugins/SetGoal
-      Topic:
-        Value: /goal_pose
+  - Class: rviz_default_plugins/Interact
+  - Class: rviz_default_plugins/MoveCamera
+  - Class: rviz_default_plugins/FocusCamera
+  - Class: rviz_default_plugins/Measure
+  - Class: rviz_default_plugins/SetGoal
+    Topic:
+      Value: /goal_pose
   Views:
     Current:
       Class: rviz_default_plugins/TopDownOrtho
@@ -105,17 +199,28 @@ Visualization Manager:
       Angle: 0
       X: 0
       Y: 0
+    Saved:
+    - Class: rviz_default_plugins/Orbit
+      Name: 3D overview
+      Target Frame: <Fixed Frame>
+      Distance: 25
+      Pitch: 1.2
+      Yaw: 0.8
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 0
 Panels:
-  - Class: rviz_common/Displays
-    Name: Displays
-  - Class: rviz_common/Time
-    Name: Time
+- Class: rviz_common/Displays
+  Name: Displays
+- Class: rviz_common/Time
+  Name: Time
 Window Geometry:
   Displays:
     collapsed: false
   Time:
     collapsed: false
-  Height: 900
-  Width: 1400
+  Height: 1000
+  Width: 1700
   Hide Left Dock: false
   Hide Right Dock: true

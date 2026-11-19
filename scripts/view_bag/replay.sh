@@ -7,10 +7,12 @@
 #      CLOUD=auto|1|0 rebuilds the point cloud from the stereo images (auto: only if the bag has
 #      no recorded nvblox cloud)
 #      REPLAY_DIR (this directory), RVIZ_CONFIG and CACHE_DIR override the container paths below
+# RVIZ_CONFIG is the layout shared with the live view (rviz/bitt.rviz). RViz opens a temporary copy with the replay-only
+# display groups switched on, because RViz rewrites the file it was started with when it is closed.
 set -e
 source /opt/ros/lyrical/setup.bash
 REPLAY_DIR=${REPLAY_DIR:-/opt/replay}
-RVIZ_CONFIG=${RVIZ_CONFIG:-/config/bag.rviz}
+RVIZ_CONFIG=${RVIZ_CONFIG:-/config/bitt.rviz}
 CACHE_DIR=${CACHE_DIR:-/cache}
 WORK=$(mktemp -d)
 # Stop the helpers (path publisher, bag player, ...) when RViz is closed or the script is interrupted.
@@ -54,4 +56,5 @@ echo "recorded nvblox cloud in bag: $RECORDED_CLOUD, recomputing cloud from ster
 # /tf_static and /robot_description are latched; bag play re-publishes them with their recorded QoS.
 ros2 bag play "$BAG" --clock -r "$RATE" ${LOOP:+--loop} $EXCLUDE > "$WORK/bag_play.log" 2>&1 &
 sleep 2
-rviz2 -d "$RVIZ_CONFIG" --ros-args -p use_sim_time:=true
+python3 "$REPLAY_DIR/rviz_layout.py" "$RVIZ_CONFIG" "$WORK/replay.rviz"
+rviz2 -d "$WORK/replay.rviz" --ros-args -p use_sim_time:=true || true
