@@ -55,14 +55,14 @@ def check_network(ip):
     src = (re.search(r' src (\S+)', route) or [None, ''])[1]
     prefix = ip.rsplit('.', 1)[0] + '.'
     if not route:
-        report('FAIL', f'no route to {ip}', f'connect to the KITT Wi-Fi (see "Cannot ping the car" in {DOC})')
+        report('FAIL', f'no route to {ip}', f'connect to the BITT Wi-Fi (see "Cannot ping the car" in {DOC})')
         return False
     if dev == 'docker0' or src.startswith('172.'):
         report('warn', f'traffic to the car leaves through a Docker network ({dev}, {src}), not through the host\'s Wi-Fi',
                f'the container must use host networking (see "Ping works but no topics" in {DOC})')
     elif not src.startswith(prefix):
         report('warn', f'your address {src} is not in the car\'s network ({prefix}x): traffic to the car goes through {dev}',
-               f'connect to the KITT Wi-Fi (see "Cannot ping the car" in {DOC})')
+               f'connect to the BITT Wi-Fi (see "Cannot ping the car" in {DOC})')
     else:
         report('ok', f'route to {ip} via {dev} from {src}')
 
@@ -71,7 +71,7 @@ def check_network(ip):
     rtt = re.search(r'= [\d.]+/([\d.]+)/', out)
     if not loss or float(loss.group(1)) >= 100:
         report('FAIL', f'{ip} does not answer ping',
-               f'check that the laptop is on the KITT Wi-Fi and the Jetson is booted (see "Cannot ping the car" in {DOC})')
+               f'check that the laptop is on the BITT Wi-Fi and the Jetson is booted (see "Cannot ping the car" in {DOC})')
         return False
     avg = float(rtt.group(1)) if rtt else 0.0
     if float(loss.group(1)) > 0 or avg >= 50:
@@ -199,6 +199,8 @@ def main():
         report('info', 'skipping the ROS checks until the network works')
 
     print('\n' + ('Problems found, see TROUBLESHOOTING.md.' if failed else 'No failed checks (look at the warnings above).'))
+    if not failed:
+        print('Hey Michael, I am ready.' if not replay else 'Hey Michael, the replay is ready.')
     sys.exit(1 if failed else 0)
 
 

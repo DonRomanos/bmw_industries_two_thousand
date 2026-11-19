@@ -1,6 +1,6 @@
 # Troubleshooting
 
-Start with the doctor. Inside the dev container, with the car switched on and your laptop on the `KITT` Wi-Fi:
+Start with the doctor. Inside the dev container, with the car switched on and your laptop on the `BITT` Wi-Fi:
 
 ```bash
 scripts/doctor.py
@@ -24,12 +24,12 @@ will work until this is fixed).
 
 ## Cannot ping the car
 
-- Connect to the Wi-Fi `KITT` (password in the [README](README.md#connecting-to-the-car)). The car has no internet,
+- Connect to the Wi-Fi `BITT` (ask your instructors for the password, see the [README](README.md#-connecting-to-the-car)). The car has no internet,
   so your OS may warn about it or switch back to another network: tell it to stay connected.
 - Your laptop must get an address `10.42.0.x`: `ip addr` (Windows: `ipconfig`). No address means DHCP on the car
   has not answered; wait a minute after the car booted.
 - The car is `10.42.0.1`. If you changed it, set `BITT_IP` on your host before opening the container.
-- The car boots its own access point after a minute or so. No `KITT` network at all means the Jetson is off or
+- The car boots its own access point after a minute or so. No `BITT` network at all means the Jetson is off or
   still booting, or it is connected to another Wi-Fi: ask your instructors.
 - A VPN or proxy client can capture `10.42.0.0/24`; disconnect it while working with the car.
 - Windows: a "public network" profile can block ping; test again with the profile set to private.
