@@ -1,6 +1,6 @@
 # BMW Industries Two Thousand
 
-BITT (a.k.a. **KITT**) is a self-driving toy car: a 12 V ride-on BMW that perceives its surroundings with a
+BITT is a self-driving toy car: a 12 V ride-on BMW that perceives its surroundings with a
 stereo camera, builds a map, localizes itself and drives autonomously. This kit contains everything you need to
 **talk to the car from your own laptop** and to **replay recorded ROS 2 bags** without the car.
 
@@ -10,21 +10,91 @@ What is in here:
 |------|---------|
 | [.devcontainer/](.devcontainer), [docker/student/](docker/student) | Development container with ROS 2 and the car's message types, preconfigured to reach the car |
 | [student_ws/](student_ws) | Your colcon workspace (put your packages in `student_ws/src`) |
-| [rviz/kitt.rviz](rviz/kitt.rviz), [scripts/rviz.sh](scripts/rviz.sh) | RViz2 layout and launcher for the dev container |
+| [rviz/bitt.rviz](rviz/bitt.rviz), [scripts/rviz.sh](scripts/rviz.sh) | RViz2 layout and launcher for the dev container |
 | [examples/](examples) | Example scripts: camera, obstacles, navigation goals, lights, bag reader |
 | [scripts/doctor.py](scripts/doctor.py), [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Connection check for the car and fixes for common problems |
-| [scripts/play_bag.sh](scripts/play_bag.sh), [scripts/kitt_env.sh](scripts/kitt_env.sh) | Replay a bag as the car inside the dev container / switch a terminal between car and replay |
+| [scripts/play_bag.sh](scripts/play_bag.sh), [scripts/bitt_env.sh](scripts/bitt_env.sh) | Replay a bag as the car inside the dev container / switch a terminal between car and replay |
 | [ros_ws/src/car_interfaces/](ros_ws/src/car_interfaces) | The car's message definitions (lights, steering, drive mode, ...), built into the dev container |
-| [foxglove/bmw_kitt.layout.json](foxglove/bmw_kitt.layout.json) | Foxglove layout: navigation view, 3D SLAM view, cameras, diagnostics, ESP state, buttons for lights/horn/drive |
+| [foxglove/bmw_bitt.layout.json](foxglove/bmw_bitt.layout.json) | Foxglove layout: navigation view, 3D SLAM view, cameras, diagnostics, ESP state, buttons for lights/horn/drive |
 | [docker/rviz/](docker/rviz) | Bag replay assets (RViz2 layout, path/cloud/visualisation helpers) used by `scripts/view_bag.sh` |
 | [scripts/view_bag.sh](scripts/view_bag.sh) | Replay a recorded bag in RViz2 |
 | [bags/](bags) | Put your rosbag2 directories here (contents are git-ignored) |
 
 A simulation will be added later.
 
-## Hardware stack
+## Hardware
 
-_To be filled out._
+The car is a 12 V ride-on BMW i8 Concept. The Jetson runs perception and navigation; an ESP32-S3 drives the motors, lights and horn and reads the remote controller.
+
+### Overview
+
+```mermaid
+flowchart LR
+    BAT[12 V AGM battery] --> BTS[2x BTS7960] --> RM[Rear drive motors]
+    BAT --> L298[L298N] --> SM[Steering motor]
+    BAT --> PWR[Power supplies]
+    PWR --> JET[Jetson Orin Nano 8 GB]
+    PWR --> ESP[ESP32-S3]
+    PWR --> LED[Lights, horn relay]
+    CAM[Stereo camera + rear USB camera] --> JET
+    JET <-->|Ethernet| ESP
+    PAD[Stadia controller] -->|Bluetooth| ESP
+    ESP --> BTS
+    ESP --> L298
+    ESP --> LED
+    POT[Steering potentiometer] --> ESP
+    PED[Hall pedal] --> ESP
+    IMU[MPU6050] -->|I2C| ESP
+    JET -->|Wi-Fi| LAP[Your laptop]
+```
+
+### Components
+
+| Part | Hardware |
+|------|----------|
+| Chassis | 12 V ride-on BMW i8 Concept, 1.27 x 0.76 x 0.52 m, wheelbase 1.09 m, track 0.64 m, wheel radius 0.14 m |
+| Steering | Rigid axle, DC motor on an L298N, absolute angle from a potentiometer read by the ESP32's ADC; max about 15.5 deg (minimum turning radius 4 m) |
+| Drive | 2x BTS7960 H-bridges, one per rear wheel |
+| Power | 1x 12 V AGM battery |
+| Compute | NVIDIA Jetson Orin Nano 8 GB |
+| Microcontroller | ESP32-S3 (Waveshare ESP32-S3-ETH), micro-ROS over Ethernet to the Jetson |
+| Stereo camera | Waveshare IMX219-83, about 10 cm baseline, on the bonnet, 30 cm above the ground and 20 cm in front of the front axle |
+| Rear camera | USB camera |
+| IMU | MPU6050 on I2C, published at 50 Hz as `/imu/data_raw` |
+| Pedal | Hall accelerator pedal on an ADC input |
+| Front lights | PCA9685 PWM driver (I2C `0x40`) |
+| Rear lights | 4x 8-pixel WS2812 RGB LED bars (32 pixels in one chain) |
+| Horn | Relay on the ESP32 |
+| Remote controller | Google Stadia controller with Bluetooth firmware, connected to the ESP32; it always overrides autonomy |
+| Network | Jetson Wi-Fi access point `KITT` at `10.42.0.1` |
+
+`/wheel_odom` and `/batt_status` are defined in the interface contract but not published yet: the sensors for them are not installed.
+
+### Controller mapping (Google Stadia controller)
+
+| Input | Action |
+|-------|--------|
+| Right stick | Drive: up = forward, down = reverse |
+| Left stick | Steering: full calibrated range left <-> right |
+| A | Horn |
+| D-pad left / right | Toggle left / right indicator |
+| D-pad up / down | Toggle front / rear lights |
+| Capture (screenshot) | Toggle hazard lights |
+| Options ("...") | Steering endstop calibration, see below |
+| Menu (hamburger, hold 3 s, sticks centred) | Drive distance test, see below |
+| Assist | Toggle manual remote / autonomy (autonomy needs a Jetson heartbeat) |
+
+Any stick, pedal or button input takes over from autonomy for a second.
+
+### Steering calibration
+
+Taught by hand once, stored in NVS (survives reboots; without a stored calibration steering is open-loop). Start: hold Options 3 s with sticks centred and car stationary.
+
+1. Controller light solid red: turn the wheels by hand fully to the **right** endstop, press Options.
+2. Solid blue: turn the wheels fully to the **left** endstop, press Options.
+3. Solid green for 5 s: endstops stored. The car then drives slowly to roughly the middle and measures the gear take-up play - lift the wheels off the ground for this part.
+
+Calibration can also be cancelled by losing the controller connection. While calibrating, drive stays off.
 
 ## Software stack
 
@@ -125,7 +195,7 @@ ros2 topic hz /preview/left/compressed
 ```
 
 The container uses host networking and Fast DDS with the car as a static discovery peer
-(`ROS_STATIC_PEERS=10.42.0.1`, `ROS_DOMAIN_ID=0`). To use another address or domain, set `KITT_IP` /
+(`ROS_STATIC_PEERS=10.42.0.1`, `ROS_DOMAIN_ID=0`). To use another address or domain, set `BITT_IP` /
 `ROS_DOMAIN_ID` in your host environment before opening the container. Host networking works on Linux and on
 Windows with Docker running inside WSL2; Docker Desktop is not supported.
 
@@ -161,9 +231,9 @@ Put a rosbag2 (MCAP) directory into [bags/](bags). Two ways to use it inside the
 
 ```bash
 scripts/play_bag.sh bags/<name> --loop --topics /tf /tf_static /preview/left/compressed   # terminal 1
-source scripts/kitt_env.sh replay                                                          # terminal 2
+source scripts/bitt_env.sh replay                                                          # terminal 2
 python3 examples/camera.py
-source scripts/kitt_env.sh live                                                            # back to the car
+source scripts/bitt_env.sh live                                                            # back to the car
 ```
 
 The bag is published in an isolated DDS domain (77, shared memory inside the container only), so replaying can never reach the car. Extra
@@ -181,13 +251,13 @@ python3 examples/bag_reader.py odom   bags/<name> --out examples/out/odom.csv
 
 and in your own code: `from bag_reader import read_messages, image_to_bgr`.
 
-For a ready-made RViz bag viewer on the host see [RViz2 in Docker](#rviz2-in-docker-host-without-the-dev-container).
+For a ready-made RViz bag viewer see [Bag viewer](#bag-viewer).
 
 ## Foxglove (recommended)
 
 1. Open [Foxglove](https://app.foxglove.dev) (web) or the desktop app.
 2. *Open connection → Foxglove WebSocket* → `ws://10.42.0.1:8765`.
-3. *Layouts → Import from file…* → [foxglove/bmw_kitt.layout.json](foxglove/bmw_kitt.layout.json).
+3. *Layouts → Import from file…* → [foxglove/bmw_bitt.layout.json](foxglove/bmw_bitt.layout.json).
 
 The layout has a top-down **Navigation** tab (costmaps, plan, footprint, velocity plot) and a 3D SLAM/nvblox tab,
 both with a goal pose tool that publishes `/goal_pose`, plus left/right/rear cameras, diagnostics, ESP state
@@ -196,7 +266,7 @@ both with a goal pose tool that publishes `/goal_pose`, plus left/right/rear cam
 ## RViz2
 
 RViz2 is installed in the dev container and shows the same things as Foxglove (costmaps, plan, footprint, SLAM
-path, camera preview, goal tool) with the layout in [rviz/kitt.rviz](rviz/kitt.rviz):
+path, camera preview, goal tool) with the layout in [rviz/bitt.rviz](rviz/bitt.rviz):
 
 ```bash
 scripts/rviz.sh
@@ -204,8 +274,8 @@ scripts/rviz.sh
 
 Pick **2D Goal Pose** in the toolbar and click on the map to send a goal (the car drives when Nav2 gets a goal; keep the
 remote controller within reach). The nvblox displays and TF are off by default; tick them in the Displays panel.
-`File → Save Config` writes your changes back to `rviz/kitt.rviz`. In a terminal switched to a bag replay
-(`source scripts/kitt_env.sh replay`) RViz shows the replay instead of the car.
+`File → Save Config` writes your changes back to `rviz/bitt.rviz`. In a terminal switched to a bag replay
+(`source scripts/bitt_env.sh replay`) RViz shows the replay instead of the car.
 
 The window opens on your host through the X11 socket (`/tmp/.X11-unix`, `DISPLAY`), rendered in software:
 
@@ -213,19 +283,23 @@ The window opens on your host through the X11 socket (`/tmp/.X11-unix`, `DISPLAY
 - **Linux:** run `xhost +local:` on the host once per login if RViz cannot connect to the display.
 - If `DISPLAY` is empty in the container, start VS Code from a terminal where `echo $DISPLAY` shows a value.
 
-## RViz2 in Docker (host, without the dev container)
+## Bag viewer
 
-Requires Docker. The helper script is currently written for **Windows with WSL2 + WSLg**; on native Linux you
-have to adapt the X11/Wayland options in its `docker run` call. It uses the same image as the dev container
-([docker/student/Dockerfile](docker/student/Dockerfile)), so there is only one image to build. To see the live car,
-use the dev container and `scripts/rviz.sh` (see [RViz2](#rviz2)).
+`scripts/view_bag.sh` replays a bag in RViz2 and works in two places:
+
+- **In the dev container:** runs directly (RViz opens through the X11 socket, see [RViz2](#rviz2)).
+- **On the host with Docker** (not in the dev container): starts a container from the same image as the dev container
+  ([docker/student/Dockerfile](docker/student/Dockerfile)). The Docker options are currently written for
+  **Windows with WSL2 + WSLg**; on native Linux you have to adapt the X11/Wayland options in its `docker run` call.
+
+To see the live car, use the dev container and `scripts/rviz.sh`.
 
 ### Replay a recorded bag
 
 Copy a rosbag2 (MCAP) directory into [bags/](bags), then:
 
 ```bash
-scripts/view_bag.sh bags/<name> [--rate 2] [--no-images] [--loop] [--partial] [--no-cloud]
+scripts/view_bag.sh <name> [--rate 2] [--no-images] [--loop] [--partial] [--no-cloud]
 ```
 
 The bag is replayed in an isolated DDS domain (it does not touch the car's ROS graph). RViz2 shows the robot and

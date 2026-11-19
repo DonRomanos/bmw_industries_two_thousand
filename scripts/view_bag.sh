@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Replay a recorded rosbag2 (see record_bag.sh) in RViz2 inside the student image (docker/student/Dockerfile, the
-# same image as the dev container) from the host (WSL2 + WSLg).
-#   scripts/view_bag.sh [bags/<name>] [--rate 1.0] [--no-images] [--loop] [--partial] [--no-cloud] [--recompute-cloud]
+# Replay a recorded rosbag2 (see record_bag.sh) in RViz2. Inside the dev container it runs directly; on the host
+# (WSL2 + WSLg) it starts a container from the student image (docker/student/Dockerfile, same as the dev container).
+#   scripts/view_bag.sh [bags/<name> | <name>] [--rate 1.0] [--no-images] [--loop] [--partial] [--no-cloud] [--recompute-cloud]
 #
 # Shows the whole recorded odometry path at once, plus the robot/TF moving while the bag plays,
 # the left/right camera images, OpenCV feature tracks on the left image and a dashboard of speed,
@@ -35,13 +35,15 @@ while [ $# -gt 0 ]; do
         --partial) PARTIAL=1; shift ;;
         --no-cloud) CLOUD=0; shift ;;
         --recompute-cloud) CLOUD=1; shift ;;
-        -*) sed -n '2,3p' "$0" | sed 's/^# \{0,1\}//'; exit 1 ;;
+        -*) sed -n '4p' "$0" | sed 's/^# \{0,1\}//'; exit 1 ;;
         *) BAG=$1; shift ;;
     esac
 done
 if [ -z "$BAG" ]; then
     BAG=$(dirname "$(ls -1t "$ROOT"/bags/*/metadata.yaml | head -1)")
 fi
+[ -d "$BAG" ] || { [ -d "$ROOT/bags/$BAG" ] && BAG=$ROOT/bags/$BAG; }
+[ -d "$BAG" ] || { echo "Bag directory $BAG not found (also looked in $ROOT/bags)"; exit 1; }
 BAG=$(cd "$BAG" && pwd)
 [ -f "$BAG/metadata.yaml" ] || { echo "$BAG is not a rosbag2 directory (no metadata.yaml)"; exit 1; }
 if [ "$PARTIAL" = 0 ]; then
@@ -55,7 +57,22 @@ if [ "$PARTIAL" = 0 ]; then
 fi
 echo "Bag: $BAG"
 
-IMAGE=bmw-kitt-student
+if [ -f /opt/bitt_ws/install/setup.bash ]; then
+    # Inside the dev container (student image): run the replay directly. RViz opens through the container's X11
+    # socket like scripts/rviz.sh. Isolated DDS domain with shared memory only, as in bitt_env.sh replay.
+    if [ -z "${DISPLAY:-}" ]; then
+        echo "DISPLAY is not set: no X server reachable. See the README, section RViz2."
+        exit 1
+    fi
+    mkdir -p "$ROOT/bags/.cache"
+    export ROS_DOMAIN_ID=77 FASTDDS_BUILTIN_TRANSPORTS=SHM
+    unset ROS_AUTOMATIC_DISCOVERY_RANGE ROS_STATIC_PEERS
+    export IMAGES PARTIAL CLOUD ${LOOP:+LOOP}
+    export REPLAY_DIR=$ROOT/docker/rviz RVIZ_CONFIG=$ROOT/docker/rviz/bag.rviz CACHE_DIR=$ROOT/bags/.cache
+    exec bash "$REPLAY_DIR/replay.sh" "$BAG" "$RATE"
+fi
+
+IMAGE=bmw-bitt-student
 DOCKERFILE=$ROOT/docker/student/Dockerfile
 # Building contacts the registry even when all layers are cached (it fails behind a proxy), so only
 # build if the image is missing, REBUILD=1 is set, or the Dockerfile changed since it was built.
