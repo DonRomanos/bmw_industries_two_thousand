@@ -39,7 +39,7 @@ will work until this is fixed).
 `doctor.py` prints `no ROS topics visible`. The container reaches the car, but ROS discovery does not.
 
 1. **Is the car running the pipeline?** The topics only exist while the nav/SLAM pipeline runs on the Jetson
-   (`kitt-pipeline` service). Ask your instructors, or check `ros2 topic list` again after a minute.
+   (it starts automatically when the car boots). Ask your instructors, or check `ros2 topic list` again after a minute.
 2. **Same domain?** The car uses domain `0`; check `echo $ROS_DOMAIN_ID`. If you set `ROS_DOMAIN_ID` on your host
    it is passed into the container.
 3. **Still in replay mode?** A terminal that ran `source scripts/bitt_env.sh replay` only sees the bag player.

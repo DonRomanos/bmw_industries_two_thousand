@@ -54,7 +54,7 @@ if [ "$PARTIAL" = 0 ]; then
     for f in $(sed -n '/relative_file_paths:/,/^  files:/{s/^ *- //p}' "$BAG/metadata.yaml"); do
         if [ ! -f "$BAG/$f" ] || [ "$(tail -c 7 "$BAG/$f" | head -c 5)" != "MCAP0" ]; then
             echo "$f is missing or truncated, the bag was not copied completely."
-            echo "Re-copy it (e.g. rsync -avP kitt:ros_ws/bags/$(basename "$BAG")/ $BAG/) or use --partial."
+            echo "Re-copy the bag from where you got it (the whole directory) or use --partial."
             exit 1
         fi
     done

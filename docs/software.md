@@ -39,6 +39,7 @@ Camera and map topics are large; use the `/preview/...` topics over Wi-Fi.
 | `/nvblox_node/static_esdf_pointcloud` | `sensor_msgs/PointCloud2` | nvblox 3D map (ESDF) |
 | `/nvblox_node/static_occupancy_grid` | `nav_msgs/OccupancyGrid` | nvblox 2D occupancy grid |
 | `/nvblox_node/mesh` | `nvblox_msgs/Mesh` | nvblox 3D mesh (heavy) |
+| `/nvblox_node/mesh_marker` | `visualization_msgs/Marker` | The same mesh for RViz (heavy: the whole mesh is re-published on every update) |
 | `/tf`, `/tf_static`, `/robot_description` | | Transforms and vehicle model (URDF) |
 | `/diagnostics` | `diagnostic_msgs/DiagnosticArray` | Jetson health (CPU/GPU load, temperature, power) |
 | `/steer_state` | `car_interfaces/SteerState` | Steering angle (rad, + left) and calibration state (20 Hz) |
@@ -57,6 +58,8 @@ Camera and map topics are large; use the `/preview/...` topics over Wi-Fi.
 | `/global_costmap/costmap`, `/local_costmap/costmap` | `nav_msgs/OccupancyGrid` | Costmaps |
 | `/local_costmap/published_footprint` | `geometry_msgs/PolygonStamped` | Vehicle footprint |
 | `/cmd_vel_nav`, `/cmd_vel_smoothed` | `geometry_msgs/TwistStamped` | Raw / smoothed velocity command from Nav2 |
+| `/nav_debug/lethal_local`, `/nav_debug/lethal_global` | `nav_msgs/OccupancyGrid` | Only the real obstacle cells of the costmaps, without the inflation halo |
+| `/nav_debug/markers`, `/nav_debug/status` | `visualization_msgs/MarkerArray`, `std_msgs/String` | Debug overlays: distance rings from the front bumper, camera field of view, footprint collision check, goal distance, and the last Nav2 planner/controller message (also as text) |
 
 ### Actuators
 
