@@ -83,8 +83,9 @@ of the messages. `doctor.py` reports `clock difference to the car`.
 
 - Symptoms: `Lookup would require extrapolation`, `Message removed because it is too old`, goals from the RViz
   2D Goal Pose tool are rejected or abort at once.
-- Fix: the instructors set the car's time (`scripts/sync_time.sh` in the main project) before a session. Check your
-  own laptop clock too (automatic time on, correct timezone), since the comparison is against your laptop.
+- Fix: run `scripts/set_car_time.py` in the dev container. It sends your laptop's time to the car, which then
+  restarts its pipeline (about 1-2 minutes). Check your own laptop clock too (automatic time on, correct timezone),
+  since the comparison is against your laptop. If the car does not answer, ask the instructors.
 - `examples/goal.py` sends goals without a time stamp and works with a skewed clock; the RViz goal tool does not.
 
 ## The car does not move
