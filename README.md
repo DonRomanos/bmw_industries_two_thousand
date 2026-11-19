@@ -55,9 +55,6 @@ stereo camera, builds a map, localizes itself and drives autonomously. This kit 
 
 </details>
 
-> [!NOTE]
-> A simulation will be added later.
-
 ## 🔧 Hardware
 
 The car is a 12 V ride-on BMW i8 Concept: a Jetson runs perception and navigation, an ESP32-S3 drives the motors, lights and horn.
@@ -219,12 +216,6 @@ tracking time) and the recorded nvblox map. It uses the same layout, [rviz/bitt.
 (topics that were not recorded stay empty); the viewer switches on the nvblox and **Bag replay** groups and writes layout
 changes you save in RViz back to that file. Without a bag argument the newest bag in `bags/` is used.
 `--partial` replays only the complete files of a bag that was not copied completely.
-
-## 🗺️ Roadmap
-
-- Simulation of the car (robot model and Nav2 setup are already exported for it)
-- Hardware description
-- One Docker image for all nodes
 
 ## ❓ Hidden bonus
 
