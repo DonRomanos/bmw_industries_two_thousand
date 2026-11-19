@@ -40,11 +40,16 @@ RUN bash -c "source /opt/ros/lyrical/setup.bash && cd /opt/kitt_ws && colcon bui
 ENV RMW_IMPLEMENTATION=rmw_fastrtps_cpp
 
 # Passwordless sudo for the default user so students can apt-get install what they need.
-RUN echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu && chmod 0440 /etc/sudoers.d/ubuntu \
-    && { echo "source /opt/ros/lyrical/setup.bash"; \
-         echo "source /opt/kitt_ws/install/setup.bash"; \
-         echo '[ -f "$KITT_STUDENT_WS/install/setup.bash" ] && source "$KITT_STUDENT_WS/install/setup.bash"'; \
-       } >> /home/ubuntu/.bashrc
+RUN echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu && chmod 0440 /etc/sudoers.d/ubuntu
+
+# Source the ROS workspaces at the very top of .bashrc: Ubuntu's stock .bashrc returns early for
+# non-interactive shells (VS Code tasks, `docker exec ... bash -ic`), which would skip lines appended below it.
+RUN printf '%s\n' \
+        'source /opt/ros/lyrical/setup.bash' \
+        'source /opt/kitt_ws/install/setup.bash' \
+        '[ -f "$KITT_STUDENT_WS/install/setup.bash" ] && source "$KITT_STUDENT_WS/install/setup.bash"' \
+        | cat - /home/ubuntu/.bashrc > /tmp/bashrc && mv /tmp/bashrc /home/ubuntu/.bashrc \
+    && chown ubuntu:ubuntu /home/ubuntu/.bashrc
 
 USER ubuntu
 CMD ["sleep", "infinity"]
