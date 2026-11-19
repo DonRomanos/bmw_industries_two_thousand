@@ -3,8 +3,8 @@
 #   scripts/rviz.sh [extra rviz2 args]
 #
 # Uses whatever the terminal is switched to: the car (default) or a bag replay (`source scripts/kitt_env.sh replay`).
-# Pick the "2D Goal Pose" tool in the toolbar to send a navigation goal to /goal_pose (the car needs drive mode
-# autonomy, see examples/drive_mode.py). The nvblox displays are off by default; tick them in the Displays panel.
+# Pick the "2D Goal Pose" tool in the toolbar to send a navigation goal to /goal_pose (the car drives when Nav2 gets
+# a goal; keep the remote controller within reach). The nvblox displays are off by default; tick them in the Displays panel.
 # Needs a display: see "RViz2" in the README (the dev container forwards X11 / WSLg). Save changes with
 # File > Save Config; commit them to rviz/kitt.rviz if you want to keep them.
 
