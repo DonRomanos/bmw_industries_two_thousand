@@ -3,7 +3,7 @@
 #   scripts/play_bag.sh bags/<name> [--rate 0.5] [--loop] [--topics /tf /preview/left/compressed ...]
 #   scripts/play_bag.sh <name>                      # same as bags/<name>
 #
-# The bag is published in an isolated DDS domain (77, localhost only), so it never reaches a real car. Run the
+# The bag is published in an isolated DDS domain (77, shared memory inside this container), so it never reaches a real car. Run the
 # examples in another terminal that is switched to the same domain:
 #   source scripts/kitt_env.sh replay
 #   python3 examples/camera.py
@@ -21,7 +21,8 @@ BAG=$1; shift
 # The ROS setup scripts are not safe under `set -u`.
 source /opt/ros/lyrical/setup.bash
 source /opt/kitt_ws/install/setup.bash
-export ROS_DOMAIN_ID=77 ROS_AUTOMATIC_DISCOVERY_RANGE=LOCALHOST
+export ROS_DOMAIN_ID=77 FASTDDS_BUILTIN_TRANSPORTS=SHM   # see kitt_env.sh
+unset ROS_AUTOMATIC_DISCOVERY_RANGE
 unset ROS_STATIC_PEERS
 
 echo "Playing $BAG on domain 77. In another terminal: source scripts/kitt_env.sh replay"

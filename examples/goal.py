@@ -22,6 +22,7 @@ from rclpy.action import ActionClient
 from rclpy.duration import Duration
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
+from rclpy.signals import SignalHandlerOptions
 from rclpy.time import Time
 from tf2_ros import Buffer, TransformException, TransformListener
 from action_msgs.msg import GoalStatus
@@ -41,7 +42,8 @@ def main():
     p.add_argument('--absolute', action='store_true', help=f'interpret x, y, yaw in the {GLOBAL_FRAME} frame')
     args = p.parse_args()
 
-    rclpy.init()
+    # Keep the context alive on Ctrl-C so the cancel request below can still be sent.
+    rclpy.init(signal_handler_options=SignalHandlerOptions.NO)
     node = Node('goal_example')
     log = node.get_logger()
     tf_buffer = Buffer()
@@ -95,7 +97,9 @@ def main():
             rclpy.spin_until_future_complete(node, result_future)
         except KeyboardInterrupt:
             log.info('cancelling goal ...')
-            rclpy.spin_until_future_complete(node, handle.cancel_goal_async(), timeout_sec=2.0)
+            cancel_future = handle.cancel_goal_async()
+            rclpy.spin_until_future_complete(node, cancel_future, timeout_sec=2.0)
+            log.info('cancel request acknowledged' if cancel_future.done() else 'cancel request timed out')
             return
         status = result_future.result().status
         names = {GoalStatus.STATUS_SUCCEEDED: 'reached', GoalStatus.STATUS_ABORTED: 'failed (aborted)',

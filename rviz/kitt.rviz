@@ -81,10 +81,9 @@ Visualization Manager:
       Name: Left camera (preview)
       Enabled: true
       Topic:
-        Value: /preview/left
+        Value: /preview/left/compressed
         Depth: 1
         Reliability Policy: Best Effort
-        Transport Hint: compressed
   Global Options:
     Fixed Frame: odom
     Frame Rate: 30

@@ -166,7 +166,7 @@ python3 examples/camera.py
 source scripts/kitt_env.sh live                                                            # back to the car
 ```
 
-The bag is published in an isolated DDS domain (77, localhost only), so replaying can never reach the car. Extra
+The bag is published in an isolated DDS domain (77, shared memory inside the container only), so replaying can never reach the car. Extra
 arguments go to `ros2 bag play` (`--rate 0.5`, `--start-offset 30`, ...). Only topics that were recorded exist, and
 the raw stereo pair is heavy, so play just what you need with `--topics`.
 
