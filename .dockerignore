@@ -1,4 +1,4 @@
 *
 !ros_ws/src/car_interfaces
-!docker/student/sim
-!docker/student/gpu-env.sh
+!ros_ws/src/bitt_sim
+!.devcontainer/gpu-env.sh

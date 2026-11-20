@@ -40,7 +40,7 @@ stereo camera, builds a map, localizes itself and drives autonomously. This kit 
 
 | Path | Content |
 |------|---------|
-| [.devcontainer/](.devcontainer), [docker/student/](docker/student) | Development container with ROS 2 and the car's message types, preconfigured to reach the car |
+| [.devcontainer/](.devcontainer) | Development container with ROS 2 and the car's message types, preconfigured to reach the car |
 | [student_ws/](student_ws) | Your colcon workspace (put your packages in `student_ws/src`) |
 | [rviz/bitt.rviz](rviz/bitt.rviz), [scripts/rviz.sh](scripts/rviz.sh), [scripts/controls.py](scripts/controls.py) | RViz2 layout (shared by the live view and the bag viewer), launcher for the dev container, and the lights/horn/cancel button window |
 | [examples/](examples) | Example scripts: camera, obstacles, navigation goals, lights, bag reader |
@@ -197,7 +197,7 @@ The window opens on your host through the X11 socket (`/tmp/.X11-unix`, `DISPLAY
 
 - **In the dev container:** runs directly (RViz opens through the X11 socket, see [RViz2](#-rviz2)).
 - **On the host with Docker** (not in the dev container): starts a container from the same image as the dev container
-  ([docker/student/Dockerfile](docker/student/Dockerfile)). The Docker options are currently written for
+  ([.devcontainer/Dockerfile](.devcontainer/Dockerfile)). The Docker options are currently written for
   **Windows with WSL2 + WSLg**; on native Linux you have to adapt the X11/Wayland options in its `docker run` call.
 
 To see the live car, use the dev container and `scripts/rviz.sh`.

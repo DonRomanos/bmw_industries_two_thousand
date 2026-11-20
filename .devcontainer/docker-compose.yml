@@ -2,7 +2,7 @@ services:
   student:
     build:
       context: ..
-      dockerfile: docker/student/Dockerfile
+      dockerfile: .devcontainer/Dockerfile
     # Host networking: DDS discovery with the car needs a real route to 10.42.0.1.
     network_mode: host
     command: sleep infinity

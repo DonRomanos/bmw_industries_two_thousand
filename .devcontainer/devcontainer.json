@@ -6,7 +6,7 @@
   "dockerComposeFile": ["docker-compose.yml", "gpu.generated.yml"],
   "service": "student",
   "workspaceFolder": "/workspaces/bmw_industries_two_thousand",
-  "initializeCommand": "bash docker/student/detect_gpu.sh",
+  "initializeCommand": "bash .devcontainer/detect_gpu.sh",
   "containerEnv": {
     "ROS_DOMAIN_ID": "${localEnv:ROS_DOMAIN_ID:0}",
     "ROS_STATIC_PEERS": "${localEnv:BITT_IP:10.42.0.1}",

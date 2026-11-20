@@ -60,7 +60,7 @@ RUN bash -c "source /opt/ros/lyrical/setup.bash && cd /opt/bitt_ws && colcon bui
 
 # Gazebo simulation of the car (ros2 launch bitt_sim sim.launch.py): the real car's Nav2 config
 # with simulated ESP32, odometry and cameras. Scenarios are mounted at runtime (scenarios/).
-COPY docker/student/sim/bitt_sim /opt/bitt_sim_ws/src/bitt_sim
+COPY ros_ws/src/bitt_sim /opt/bitt_sim_ws/src/bitt_sim
 RUN bash -c "source /opt/ros/lyrical/setup.bash && source /opt/bitt_ws/install/setup.bash \
         && cd /opt/bitt_sim_ws && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release" \
     && rm -rf /opt/bitt_sim_ws/build /opt/bitt_sim_ws/log
@@ -74,7 +74,7 @@ RUN echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu && chmod 0440 /
 
 # Source the ROS workspaces at the very top of .bashrc: Ubuntu's stock .bashrc returns early for
 # non-interactive shells (VS Code tasks, `docker exec ... bash -ic`), which would skip lines appended below it.
-COPY docker/student/gpu-env.sh /etc/bitt/gpu-env.sh
+COPY .devcontainer/gpu-env.sh /etc/bitt/gpu-env.sh
 RUN printf '%s\n' \
         'source /etc/bitt/gpu-env.sh' \
         'source /opt/ros/lyrical/setup.bash' \

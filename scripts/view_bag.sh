@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Replay a recorded rosbag2 (see record_bag.sh) in RViz2. Inside the dev container it runs directly; on the host
-# (WSL2 + WSLg) it starts a container from the student image (docker/student/Dockerfile, same as the dev container).
+# (WSL2 + WSLg) it starts a container from the student image (.devcontainer/Dockerfile, same as the dev container).
 #   scripts/view_bag.sh [bags/<name> | <name>] [--rate 1.0] [--no-images] [--loop] [--partial] [--no-cloud] [--recompute-cloud]
 #
 # Shows the whole recorded odometry path at once, plus the robot/TF moving while the bag plays,
@@ -77,7 +77,7 @@ if [ -f /opt/bitt_ws/install/setup.bash ]; then
 fi
 
 IMAGE=bmw-bitt-student
-DOCKERFILE=$ROOT/docker/student/Dockerfile
+DOCKERFILE=$ROOT/.devcontainer/Dockerfile
 if ! command -v docker >/dev/null 2>&1; then
     echo "Neither the dev container nor Docker was found, so RViz2 cannot be started here."
     echo "Either run this script inside the dev container (VS Code: Dev Containers: Reopen in Container),"
