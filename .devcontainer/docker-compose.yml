@@ -1,0 +1,13 @@
+services:
+  student:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    # Host networking: DDS discovery with the car needs a real route to 10.42.0.1.
+    network_mode: host
+    command: sleep infinity
+    volumes:
+      - ..:/workspaces/bmw_industries_two_thousand:cached
+      # X11 socket directory lets RViz2 and Gazebo open windows on the host (WSLg or an X11/Xwayland desktop).
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    # GPU access (devices, groups, NVIDIA runtime) is added by gpu.generated.yml.

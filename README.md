@@ -19,6 +19,7 @@
   <a href="#-foxglove-recommended">Foxglove</a> ·
   <a href="#-rviz2">RViz2</a> ·
   <a href="#-bag-viewer">Bags</a> ·
+  <a href="#-simulation">Simulation</a> ·
   <a href="docs/hardware.md">Hardware</a> ·
   <a href="docs/software.md">Software</a> ·
   <a href="TROUBLESHOOTING.md">Troubleshooting</a>
@@ -40,7 +41,7 @@ stereo camera, builds a map, localizes itself and drives autonomously. This kit 
 
 | Path | Content |
 |------|---------|
-| [.devcontainer/](.devcontainer), [docker/student/](docker/student) | Development container with ROS 2 and the car's message types, preconfigured to reach the car |
+| [.devcontainer/](.devcontainer) | Development container with ROS 2 and the car's message types, preconfigured to reach the car |
 | [student_ws/](student_ws) | Your colcon workspace (put your packages in `student_ws/src`) |
 | [rviz/bitt.rviz](rviz/bitt.rviz), [scripts/rviz.sh](scripts/rviz.sh), [scripts/controls.py](scripts/controls.py) | RViz2 layout (shared by the live view and the bag viewer), launcher for the dev container, and the lights/horn/cancel button window |
 | [examples/](examples) | Example scripts: camera, obstacles, navigation goals, lights, bag reader |
@@ -51,12 +52,10 @@ stereo camera, builds a map, localizes itself and drives autonomously. This kit 
 | [foxglove/bmw_bitt.layout.json](foxglove/bmw_bitt.layout.json) | Foxglove layout: navigation view, 3D SLAM view, cameras, diagnostics, ESP state, buttons for lights/horn/drive |
 | [scripts/view_bag/](scripts/view_bag) | Bag replay helpers (path/cloud/visualisation, layout switcher) used by `scripts/view_bag.sh` |
 | [scripts/view_bag.sh](scripts/view_bag.sh) | Replay a recorded bag in RViz2 |
+| [ros_ws/src/bitt_sim/](ros_ws/src/bitt_sim), [scenarios/](scenarios) | Gazebo simulation of the car with its real Nav2 setup, and the world files (`.sdf`) it runs in (contents git-ignored) |
 | [bags/](bags) | Put your rosbag2 directories here (contents are git-ignored) |
 
 </details>
-
-> [!NOTE]
-> A simulation will be added later.
 
 ## 🔧 Hardware
 
@@ -200,7 +199,7 @@ The window opens on your host through the X11 socket (`/tmp/.X11-unix`, `DISPLAY
 
 - **In the dev container:** runs directly (RViz opens through the X11 socket, see [RViz2](#-rviz2)).
 - **On the host with Docker** (not in the dev container): starts a container from the same image as the dev container
-  ([docker/student/Dockerfile](docker/student/Dockerfile)). The Docker options are currently written for
+  ([.devcontainer/Dockerfile](.devcontainer/Dockerfile)). The Docker options are currently written for
   **Windows with WSL2 + WSLg**; on native Linux you have to adapt the X11/Wayland options in its `docker run` call.
 
 To see the live car, use the dev container and `scripts/rviz.sh`.
@@ -220,12 +219,38 @@ tracking time) and the recorded nvblox map. It uses the same layout, [rviz/bitt.
 changes you save in RViz back to that file. Without a bag argument the newest bag in `bags/` is used.
 `--partial` replays only the complete files of a bag that was not copied completely.
 
-## 🗺️ Roadmap
+## 🕹️ Simulation
 
-- Simulation of the car (robot model and Nav2 setup are already exported for it)
-- Hardware description
-- One Docker image for all nodes
+`bitt_sim` runs the car in [Gazebo](https://gazebosim.org) without hardware. Everything the Jetson and ESP32 provide is
+simulated (steering and drive, odometry, stereo cameras and camera info); Nav2 runs with the car's real configuration, so
+the topics match the [topic reference](docs/software.md) and your own nodes and the [examples](#-examples) work unchanged.
+The package is built into the dev container, so run everything below inside it.
+
+```bash
+source scripts/bitt_env.sh replay        # isolate the sim from the car (see the warning below)
+ros2 launch bitt_sim sim.launch.py scenario:=parking_lot
+```
+
+| Argument | Default | |
+|---|---|---|
+| `scenario` | `parking_lot` | World to load, looked up in [scenarios/](scenarios) (or `$BITT_SCENARIOS_DIR`) as `<name>.sdf`, `i8_<name>.sdf` or `<name>/*.sdf` |
+| `world` | | Path to a world `.sdf`; overrides `scenario` |
+| `gui` | `false` | Also open the Gazebo window (needs a display, see [RViz2](#-rviz2)) |
+| `foxglove` | `true` | Start the Foxglove bridge on port 8765 |
+
+Put the world files you want to use into [scenarios/](scenarios) (its contents are git-ignored; ask your instructors for
+the course scenarios). If the scenario is not found, the launch lists the worlds it did find.
+
+To look at the sim, use [Foxglove](#-foxglove-recommended) with `ws://localhost:8765`, or `scripts/rviz.sh`.
+Send goals with [examples/goal.py](examples/goal.py) or the usual Nav2 tools.
+
+> [!WARNING]
+> The sim publishes the same topics as the car (`/cmd_vel`, `/steer_cmd`, ...). Run `source scripts/bitt_env.sh replay` in
+> every terminal that takes part in the sim first: it moves the terminal to an isolated DDS domain inside the container,
+> so the sim and the real car cannot see each other. Switch back with `source scripts/bitt_env.sh live`.
+
+Sim code changes under [ros_ws/src/bitt_sim/](ros_ws/src/bitt_sim) only take effect after rebuilding the dev container.
 
 ## ❓ Hidden bonus
 
-There is a hidden bonus on the car. Can you find it, decode it and tell is what it is?
+There is a hidden bonus on the car. Can you find it, decode it and tell us what it is?
