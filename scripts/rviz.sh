@@ -10,6 +10,7 @@
 # File > Save Config As... rviz/bitt.rviz if you want to keep them (RViz works on a temporary copy of the layout, because it
 # rewrites the file it was started with when it is closed).
 # Also opens the button window scripts/controls.py (lights, hazard, horn, cancel navigation); NO_CONTROLS=1 skips it.
+# Also starts scripts/car_status_viz.py: battery voltage, wheel speed and e-stop as text above the car.
 
 set -eo pipefail
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
@@ -27,7 +28,9 @@ if [ "${NO_CONTROLS:-0}" != 1 ]; then
         echo "PyQt6 is missing, so the button window is not started (rebuild the dev container, or: sudo apt-get install python3-pyqt6)."
     fi
 fi
+python3 "$ROOT/scripts/car_status_viz.py" &
+STATUS_PID=$!
 LAYOUT=$(mktemp --suffix=.rviz)
 cp "$ROOT/rviz/bitt.rviz" "$LAYOUT"
-trap 'rm -f "$LAYOUT"; kill $CONTROLS_PID 2>/dev/null || true' EXIT
+trap 'rm -f "$LAYOUT"; kill $CONTROLS_PID $STATUS_PID 2>/dev/null || true' EXIT
 rviz2 -d "$LAYOUT" "$@"
