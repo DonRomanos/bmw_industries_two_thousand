@@ -169,15 +169,17 @@ both with a goal pose tool that publishes `/goal_pose`, plus left/right/rear cam
 ## 🖥️ RViz2
 
 RViz2 is installed in the dev container and shows the same things as Foxglove (costmaps, plan, footprint, SLAM
-path, camera preview, goal tool) with the layout in [rviz/bitt.rviz](rviz/bitt.rviz):
+path, camera preview, goal tool) plus the Nav2 debug overlays (smoothed plan, controller trajectories, obstacle-only
+costmap, bumper distance rings and camera field of view) with the layout in [rviz/bitt.rviz](rviz/bitt.rviz):
 
 ```bash
 scripts/rviz.sh
 ```
 
 Pick **2D Goal Pose** in the toolbar and click on the map to send a goal (the car drives when Nav2 gets a goal; keep the
-remote controller within reach). The **Cameras**, **nvblox** and **Bag replay** groups and TF are off by default (each
-camera opens a big docked panel that squeezes the Displays list, and nvblox and stereo images are heavy over Wi-Fi); tick
+remote controller within reach). The **Cameras** group shows the left preview camera (the right and rear previews are in the
+group, tick them in the Displays panel); each camera opens a big docked panel that squeezes the Displays list. The **nvblox** and
+**Bag replay** groups and TF are off by default (nvblox and stereo images are heavy over Wi-Fi); tick
 them in the Displays panel. The cuVSLAM landmarks are off because there are
 thousands of them; *Panels → Views* has a saved 3D overview.
 RViz works on a temporary copy of the layout (it rewrites the file it was started with when you close it), so closing it

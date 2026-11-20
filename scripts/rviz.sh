@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Start RViz2 with the student layout (costmaps, plan, footprint, SLAM path, camera preview, goal tool).
+# Start RViz2 with the student layout (costmaps, plan, Nav2 debug overlays, footprint, SLAM path, camera preview, goal tool).
 #   scripts/rviz.sh [extra rviz2 args]
 #
 # Uses whatever the terminal is switched to: the car (default) or a bag replay (`source scripts/bitt_env.sh replay`).
