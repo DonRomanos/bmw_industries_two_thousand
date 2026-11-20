@@ -53,7 +53,7 @@ Camera and map topics are large; use the `/preview/...` topics over Wi-Fi.
 |-------|------|-------------|
 | `/goal_pose` | `geometry_msgs/PoseStamped` | Send a navigation goal (Foxglove: goal pose tool) |
 | `/navigate_to_pose` (action) | `nav2_msgs/action/NavigateToPose` | Send a goal and get feedback and result; used by [examples/goal.py](../examples/goal.py) |
-| `/navigate_to_pose/_action/cancel_goal` (service) | `action_msgs/srv/CancelGoal` | **Cancel navigation**: stops the active goal. From code call `cancel_goal_async()` on the goal handle (Ctrl-C does this in `goal.py`); from a shell: `ros2 service call /navigate_to_pose/_action/cancel_goal action_msgs/srv/CancelGoal "{}"` (an empty request cancels all goals) |
+| `/navigate_to_pose/_action/cancel_goal` (service) | `action_msgs/srv/CancelGoal` | **Cancel navigation**: stops the active goal. From code call `cancel_goal_async()` on the goal handle (Ctrl-C does this in `goal.py`); from a shell: `scripts/cancel_navigation.py`, or `ros2 service call /navigate_to_pose/_action/cancel_goal action_msgs/srv/CancelGoal "{}"` (an empty request cancels all goals) |
 | `/plan`, `/plan_smoothed` | `nav_msgs/Path` | Global plan |
 | `/global_costmap/costmap`, `/local_costmap/costmap` | `nav_msgs/OccupancyGrid` | Costmaps |
 | `/local_costmap/published_footprint` | `geometry_msgs/PolygonStamped` | Vehicle footprint |
@@ -84,6 +84,7 @@ For when nobody can ssh into the car. These are available while the pipeline run
 | Topic / service | Type | Description |
 |-----------------|------|-------------|
 | `/control_room/restart_pipeline` (service) | `std_srvs/srv/Trigger` | **Restart the whole pipeline** (cameras, SLAM, nvblox, Nav2): `ros2 service call /control_room/restart_pipeline std_srvs/srv/Trigger`. It is back after about 1-2 minutes; a second request within a minute is refused |
+| `/control_room/cancel_navigation` (service) | `std_srvs/srv/Trigger` | **Cancel the active Nav2 goal**, the car stops: `ros2 service call /control_room/cancel_navigation std_srvs/srv/Trigger`. Answers "No active navigation goal" if nothing is running. Also the red button in the Foxglove layout |
 | `/control_room/set_time` | `builtin_interfaces/Time` | **Set the car's clock** (Unix seconds, only `sec` is used): `ros2 topic pub --once /control_room/set_time builtin_interfaces/msg/Time "{sec: $(date +%s)}"`. The car restarts its pipeline afterwards because the clock jump breaks SLAM. Easier: [scripts/set_car_time.py](../scripts/set_car_time.py). Times far from 2026 or within 5 s of the car's clock are ignored |
 | `/control_room/status` | `std_msgs/String` | Answer to the last request (`ros2 topic echo /control_room/status`) |
 

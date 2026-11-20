@@ -16,6 +16,7 @@
   <a href="#-connecting-to-the-car">Connect</a> ·
   <a href="#-development-container">Dev container</a> ·
   <a href="#-examples">Examples</a> ·
+  <a href="USECASES.md">Use cases</a> ·
   <a href="#-foxglove-recommended">Foxglove</a> ·
   <a href="#-rviz2">RViz2</a> ·
   <a href="#-bag-viewer">Bags</a> ·
@@ -45,7 +46,9 @@ stereo camera, builds a map, localizes itself and drives autonomously. This kit 
 | [student_ws/](student_ws) | Your colcon workspace (put your packages in `student_ws/src`) |
 | [rviz/bitt.rviz](rviz/bitt.rviz), [scripts/rviz.sh](scripts/rviz.sh), [scripts/controls.py](scripts/controls.py) | RViz2 layout (shared by the live view and the bag viewer), launcher for the dev container, and the lights/horn/cancel button window |
 | [examples/](examples) | Example scripts: camera, obstacles, navigation goals, lights, bag reader |
+| [USECASES.md](USECASES.md) | The tasks for the course: intent detection, parking, memory and monitoring, and your own idea |
 | [scripts/doctor.py](scripts/doctor.py), [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Connection check for the car and fixes for common problems |
+| [scripts/cancel_navigation.py](scripts/cancel_navigation.py) | Abort the active Nav2 goal from a terminal, the car stops |
 | [scripts/set_car_time.py](scripts/set_car_time.py) | Set the car's clock from your laptop over ROS (the car has no battery-backed clock) |
 | [scripts/play_bag.sh](scripts/play_bag.sh), [scripts/bitt_env.sh](scripts/bitt_env.sh) | Replay a bag as the car inside the dev container / switch a terminal between car and replay |
 | [ros_ws/src/car_interfaces/](ros_ws/src/car_interfaces) | The car's message definitions (lights, steering, drive mode, ...), built into the dev container |
@@ -169,15 +172,17 @@ both with a goal pose tool that publishes `/goal_pose`, plus left/right/rear cam
 ## 🖥️ RViz2
 
 RViz2 is installed in the dev container and shows the same things as Foxglove (costmaps, plan, footprint, SLAM
-path, camera preview, goal tool) with the layout in [rviz/bitt.rviz](rviz/bitt.rviz):
+path, camera preview, goal tool) plus the Nav2 debug overlays (smoothed plan, controller trajectories, obstacle-only
+costmap, bumper distance rings and camera field of view) with the layout in [rviz/bitt.rviz](rviz/bitt.rviz):
 
 ```bash
 scripts/rviz.sh
 ```
 
 Pick **2D Goal Pose** in the toolbar and click on the map to send a goal (the car drives when Nav2 gets a goal; keep the
-remote controller within reach). The **Cameras**, **nvblox** and **Bag replay** groups and TF are off by default (each
-camera opens a big docked panel that squeezes the Displays list, and nvblox and stereo images are heavy over Wi-Fi); tick
+remote controller within reach). The **Cameras** group shows the left preview camera (the right and rear previews are in the
+group, tick them in the Displays panel); each camera opens a big docked panel that squeezes the Displays list. The **nvblox** and
+**Bag replay** groups and TF are off by default (nvblox and stereo images are heavy over Wi-Fi); tick
 them in the Displays panel. The cuVSLAM landmarks are off because there are
 thousands of them; *Panels → Views* has a saved 3D overview.
 RViz works on a temporary copy of the layout (it rewrites the file it was started with when you close it), so closing it

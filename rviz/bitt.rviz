@@ -67,6 +67,35 @@ Visualization Manager:
         Value: /plan
         Reliability Policy: Reliable
       Color: 0; 200; 0
+    - Class: rviz_default_plugins/Path
+      Name: Plan (smoothed)
+      Enabled: true
+      Topic:
+        Value: /plan_smoothed
+        Reliability Policy: Reliable
+      Color: 0; 120; 255
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Controller candidate trajectories
+      Enabled: true
+      Topic:
+        Value: /controller_server/candidate_trajectories
+        Reliability Policy: Reliable
+    - Class: rviz_default_plugins/Map
+      Name: Obstacles only (local)
+      Enabled: true
+      Topic:
+        Value: /nav_debug/lethal_local
+        Depth: 1
+        Durability Policy: Transient Local
+        Reliability Policy: Reliable
+      Color Scheme: costmap
+      Alpha: 0.9
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Nav debug (rings, field of view, goal distance)
+      Enabled: true
+      Topic:
+        Value: /nav_debug/markers
+        Reliability Policy: Reliable
   - Class: rviz_common/Group
     Name: SLAM
     Enabled: true
@@ -94,13 +123,27 @@ Visualization Manager:
       Alpha: 0.5
   - Class: rviz_common/Group
     Name: Cameras
-    Enabled: false
+    Enabled: true
     Displays:
     - Class: rviz_default_plugins/Image
       Name: Left camera (preview)
       Enabled: true
       Topic:
         Value: /preview/left/compressed
+        Depth: 1
+        Reliability Policy: Best Effort
+    - Class: rviz_default_plugins/Image
+      Name: Right camera (preview)
+      Enabled: false
+      Topic:
+        Value: /preview/right/compressed
+        Depth: 1
+        Reliability Policy: Best Effort
+    - Class: rviz_default_plugins/Image
+      Name: Rear camera (only if connected)
+      Enabled: false
+      Topic:
+        Value: /back_camera/image/compressed
         Depth: 1
         Reliability Policy: Best Effort
   - Class: rviz_common/Group
