@@ -46,7 +46,7 @@ flowchart LR
 | Remote controller | Google Stadia controller with Bluetooth firmware, connected to the ESP32; it always overrides autonomy |
 | Network | Jetson Wi-Fi access point `BITT` at `10.42.0.1` |
 
-`/wheel_odom` and `/batt_status` are defined in the interface contract but not published yet: the sensors for them are not installed.
+The ESP32 publishes the wheel encoders as `/wheel_odom` (about 44 Hz) and the battery voltage and e-stop as `/batt_status` (1 Hz), see [software.md](software.md). The simulation does not publish them.
 
 ## Controller mapping (Google Stadia controller)
 

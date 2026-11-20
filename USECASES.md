@@ -62,6 +62,7 @@ against the sim and the real car. Your code belongs in [student_ws/src](student_
 | 📍 Where the car is and where it has been | `/tf` (`odom` → `base_link`), `/visual_slam/tracking/odometry`, `/visual_slam/tracking/slam_path` |
 | 🧭 Drive to a point | Nav2 goals: `/goal_pose` or the `navigate_to_pose` action, see [examples/goal.py](examples/goal.py); cancel with the *Cancel navigation* button or `scripts/cancel_navigation.py` |
 | 💬 Say something | Lights, indicators, hazard and horn: [examples/lights.py](examples/lights.py) |
+| 🔋 Battery and measured speed | `/batt_status` (voltage, e-stop), `/wheel_odom` (wheel speed, encoder ticks) |
 | 🎛️ Steering and speed as commanded | `/steer_cmd`, `/cmd_vel`, `/steer_state` (read them; see the warning below before publishing to the first two) |
 
 </details>
@@ -77,7 +78,7 @@ against the sim and the real car. Your code belongs in [student_ws/src](student_
 Things to keep in mind:
 
 - 🚗 The car has **Ackermann steering**: it cannot turn on the spot, and goals behind or beside it can be rejected.
-- 🔋 `/wheel_odom` and `/batt_status` are **not published yet**. For speed and distance use the SLAM odometry.
+- 🔋 `/wheel_odom` and `/batt_status` come from the car only, the simulation does not publish them.
 - 📶 Wi-Fi limits what you can receive: use the `/preview/...` topics and the costmaps. The raw and depth images are far
   too large (see "Topics visible but no data" in [TROUBLESHOOTING.md](TROUBLESHOOTING.md)).
 - 🔇 The car has no speaker or screen: its way of talking is lights, indicators, hazard and the horn.

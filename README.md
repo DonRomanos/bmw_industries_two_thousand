@@ -45,6 +45,7 @@ stereo camera, builds a map, localizes itself and drives autonomously. This kit 
 | [.devcontainer/](.devcontainer) | Development container with ROS 2 and the car's message types, preconfigured to reach the car |
 | [student_ws/](student_ws) | Your colcon workspace (put your packages in `student_ws/src`) |
 | [rviz/bitt.rviz](rviz/bitt.rviz), [scripts/rviz.sh](scripts/rviz.sh), [scripts/controls.py](scripts/controls.py) | RViz2 layout (shared by the live view and the bag viewer), launcher for the dev container, and the lights/horn/cancel button window |
+| [scripts/car_status_viz.py](scripts/car_status_viz.py) | Shows battery voltage, wheel speed and e-stop as text above the car in RViz (started by `rviz.sh`) |
 | [examples/](examples) | Example scripts: camera, obstacles, navigation goals, lights, bag reader |
 | [USECASES.md](USECASES.md) | The tasks for the course: intent detection, parking, memory and monitoring, and your own idea |
 | [scripts/doctor.py](scripts/doctor.py), [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Connection check for the car and fixes for common problems |
@@ -52,7 +53,7 @@ stereo camera, builds a map, localizes itself and drives autonomously. This kit 
 | [scripts/set_car_time.py](scripts/set_car_time.py) | Set the car's clock from your laptop over ROS (the car has no battery-backed clock) |
 | [scripts/play_bag.sh](scripts/play_bag.sh), [scripts/bitt_env.sh](scripts/bitt_env.sh) | Replay a bag as the car inside the dev container / switch a terminal between car and replay |
 | [ros_ws/src/car_interfaces/](ros_ws/src/car_interfaces) | The car's message definitions (lights, steering, drive mode, ...), built into the dev container |
-| [foxglove/bmw_bitt.layout.json](foxglove/bmw_bitt.layout.json) | Foxglove layout: navigation view, 3D SLAM view, cameras, diagnostics, ESP state, buttons for lights/horn/drive |
+| [foxglove/bmw_bitt.layout.json](foxglove/bmw_bitt.layout.json) | Foxglove layout: navigation view, 3D SLAM view, cameras, diagnostics, battery gauge, e-stop and wheel speed, buttons for lights/horn/drive |
 | [scripts/view_bag/](scripts/view_bag) | Bag replay helpers (path/cloud/visualisation, layout switcher) used by `scripts/view_bag.sh` |
 | [scripts/view_bag.sh](scripts/view_bag.sh) | Replay a recorded bag in RViz2 |
 | [ros_ws/src/bitt_sim/](ros_ws/src/bitt_sim), [scenarios/](scenarios) | Gazebo simulation of the car with its real Nav2 setup, and the world files (`.sdf`) it runs in (contents git-ignored) |
@@ -184,7 +185,10 @@ remote controller within reach). The **Cameras** group shows the left preview ca
 group, tick them in the Displays panel); each camera opens a big docked panel that squeezes the Displays list. The **nvblox** and
 **Bag replay** groups and TF are off by default (nvblox and stereo images are heavy over Wi-Fi); tick
 them in the Displays panel. The cuVSLAM landmarks are off because there are
-thousands of them; *Panels → Views* has a saved 3D overview.
+thousands of them; *Panels → Views* has a saved 3D overview. The text above the car (**Battery and wheel speed**) shows
+`/batt_status` and `/wheel_odom`; RViz cannot display those messages itself, so `rviz.sh` starts
+[scripts/car_status_viz.py](scripts/car_status_viz.py). It turns amber below 11.8 V, red below 11 V or with the e-stop
+pressed, and says "no data" in the simulation.
 RViz works on a temporary copy of the layout (it rewrites the file it was started with when you close it), so closing it
 never changes the repository; to keep layout changes use `File → Save Config As…` and pick `rviz/bitt.rviz`. RViz has no buttons of its own, so `scripts/rviz.sh`
 also opens a small **BITT controls** window ([scripts/controls.py](scripts/controls.py), always on top) with buttons for headlights,
