@@ -585,14 +585,35 @@
       "buttonTooltip": "Cancels the active Nav2 goal, the car stops",
       "foxglovePanelTitle": "Navigation"
     },
-    "RawMessages!battery": {
-      "topicPath": "/batt_status",
-      "diffEnabled": false,
-      "diffMethod": "custom",
-      "diffTopicPath": "",
-      "showFullMessageForDiff": false,
-      "expansion": "all",
-      "foxglovePanelTitle": "Battery"
+    "Gauge!battery": {
+      "path": "/batt_status.voltage_total",
+      "minValue": 10.5,
+      "maxValue": 12.8,
+      "colorMode": "colormap",
+      "colorMap": "red-yellow-green",
+      "reverse": false,
+      "foxglovePanelTitle": "Battery [V]"
+    },
+    "Indicator!estop": {
+      "path": "/batt_status.estop_clear",
+      "style": "background",
+      "fallbackColor": "#6b7280",
+      "fallbackLabel": "no data",
+      "rules": [
+        {
+          "operator": "=",
+          "rawValue": "true",
+          "color": "#2e9e5b",
+          "label": "E-stop clear"
+        },
+        {
+          "operator": "=",
+          "rawValue": "false",
+          "color": "#d64545",
+          "label": "E-STOP PRESSED"
+        }
+      ],
+      "foxglovePanelTitle": "E-stop"
     },
     "3D!nav": {
       "followTf": "odom",
@@ -753,6 +774,31 @@
       "sidebarDimension": 0,
       "foxglovePanelTitle": "Nav2 velocity command"
     },
+    "Plot!wheel_speed": {
+      "paths": [
+        {
+          "value": "/wheel_odom.left_speed_mps",
+          "label": "left [m/s]",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        },
+        {
+          "value": "/wheel_odom.right_speed_mps",
+          "label": "right [m/s]",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "followingViewWidth": 30,
+      "sidebarDimension": 0,
+      "foxglovePanelTitle": "Wheel speed"
+    },
     "Tab!map": {
       "activeTabIdx": 0,
       "tabs": [
@@ -761,7 +807,12 @@
           "layout": {
             "direction": "column",
             "first": "3D!nav",
-            "second": "Plot!nav_cmd",
+            "second": {
+              "direction": "row",
+              "first": "Plot!nav_cmd",
+              "second": "Plot!wheel_speed",
+              "splitPercentage": 50.0
+            },
             "splitPercentage": 78.0
           }
         },
@@ -811,9 +862,14 @@
           "direction": "column",
           "first": {
             "direction": "row",
-            "first": "RawMessages!battery",
-            "second": "CallService!cancel_nav",
-            "splitPercentage": 60.0
+            "first": "Gauge!battery",
+            "second": {
+              "direction": "row",
+              "first": "Indicator!estop",
+              "second": "CallService!cancel_nav",
+              "splitPercentage": 50.0
+            },
+            "splitPercentage": 33.33
           },
           "second": "Tab!buttons",
           "splitPercentage": 31.03
