@@ -500,15 +500,6 @@
       "sortByLevel": true,
       "foxglovePanelTitle": "Diagnostics"
     },
-    "DiagnosticStatusPanel!diag": {
-      "topicToRender": "/diagnostics",
-      "numeric": false,
-      "sortByLevel": true,
-      "selectedHardwareId": null,
-      "selectedName": null,
-      "splitFraction": 0.4,
-      "foxglovePanelTitle": "Diagnostics detail"
-    },
     "Plot!steer": {
       "paths": [
         {
@@ -583,32 +574,25 @@
       "sidebarDimension": 0,
       "foxglovePanelTitle": "Controller axes"
     },
-    "RawMessages!steer_state": {
-      "topicPath": "/steer_state",
-      "diffEnabled": false,
-      "diffMethod": "custom",
-      "diffTopicPath": "",
-      "showFullMessageForDiff": false,
-      "expansion": "all",
-      "foxglovePanelTitle": "Steer"
+    "CallService!cancel_nav": {
+      "serviceName": "/control_room/cancel_navigation",
+      "request": "{}",
+      "layout": "vertical",
+      "timeoutSeconds": 10,
+      "editingMode": false,
+      "buttonText": "CANCEL NAVIGATION",
+      "buttonColor": "#d64545",
+      "buttonTooltip": "Cancels the active Nav2 goal, the car stops",
+      "foxglovePanelTitle": "Navigation"
     },
-    "RawMessages!controller_state": {
-      "topicPath": "/controller_state",
+    "RawMessages!battery": {
+      "topicPath": "/batt_status",
       "diffEnabled": false,
       "diffMethod": "custom",
       "diffTopicPath": "",
       "showFullMessageForDiff": false,
       "expansion": "all",
-      "foxglovePanelTitle": "Controller"
-    },
-    "RawMessages!lights_state": {
-      "topicPath": "/lights_state",
-      "diffEnabled": false,
-      "diffMethod": "custom",
-      "diffTopicPath": "",
-      "showFullMessageForDiff": false,
-      "expansion": "all",
-      "foxglovePanelTitle": "Lights"
+      "foxglovePanelTitle": "Battery"
     },
     "3D!nav": {
       "followTf": "odom",
@@ -769,154 +753,6 @@
       "sidebarDimension": 0,
       "foxglovePanelTitle": "Nav2 velocity command"
     },
-    "3D!debug": {
-      "followTf": "odom",
-      "followMode": "follow-none",
-      "cameraState": {
-        "perspective": false,
-        "distance": 5,
-        "phi": 0,
-        "thetaOffset": 0,
-        "targetOffset": [
-          0,
-          0,
-          0
-        ],
-        "target": [
-          0,
-          0,
-          0
-        ],
-        "targetOrientation": [
-          0,
-          0,
-          0,
-          1
-        ],
-        "fovy": 45,
-        "near": 0.5,
-        "far": 5000
-      },
-      "scene": {
-        "backgroundColor": "#15181e",
-        "enableStats": false
-      },
-      "transforms": {
-        "showLabel": false
-      },
-      "topics": {
-        "/visual_slam/tracking/slam_path": {
-          "visible": true,
-          "lineWidth": 0.06,
-          "color": "#2ee59d"
-        },
-        "/visual_slam/tracking/vo_path": {
-          "visible": true,
-          "lineWidth": 0.03,
-          "color": "#4aa8ff"
-        },
-        "/plan": {
-          "visible": true,
-          "lineWidth": 0.08,
-          "color": "#ffcf33"
-        },
-        "/nvblox_node/static_occupancy_grid": {
-          "visible": false
-        },
-        "/nvblox_node/static_esdf_pointcloud": {
-          "visible": false
-        },
-        "/local_costmap/costmap": {
-          "visible": true,
-          "colorMode": "costmap",
-          "alpha": 0.2
-        },
-        "/global_costmap/costmap": {
-          "visible": false
-        },
-        "/local_costmap/published_footprint": {
-          "visible": true,
-          "color": "#ff4d4d",
-          "lineWidth": 0.05
-        },
-        "/nav_debug/lethal_local": {
-          "visible": true,
-          "colorMode": "custom",
-          "minColor": "#00000000",
-          "maxColor": "#ff2020ff",
-          "unknownColor": "#00000000",
-          "invalidColor": "#00000000",
-          "alpha": 1.0
-        },
-        "/nav_debug/lethal_global": {
-          "visible": true,
-          "colorMode": "custom",
-          "minColor": "#00000000",
-          "maxColor": "#ff8800d0",
-          "unknownColor": "#00000000",
-          "invalidColor": "#00000000",
-          "alpha": 1.0
-        },
-        "/nav_debug/markers": {
-          "visible": true
-        }
-      },
-      "layers": {
-        "grid": {
-          "layerId": "foxglove.Grid",
-          "visible": true,
-          "frameId": "odom",
-          "size": 30,
-          "divisions": 30,
-          "lineWidth": 1,
-          "color": "#2b3a4a",
-          "position": [
-            0,
-            0,
-            0
-          ],
-          "rotation": [
-            0,
-            0,
-            0
-          ],
-          "order": 1
-        },
-        "urdf": {
-          "layerId": "foxglove.Urdf",
-          "visible": true,
-          "sourceType": "topic",
-          "topic": "/robot_description",
-          "order": 2
-        }
-      },
-      "publish": {
-        "type": "pose",
-        "poseTopic": "/goal_pose",
-        "pointTopic": "/clicked_point",
-        "poseEstimateTopic": "/initialpose",
-        "poseEstimateXDeviation": 0.5,
-        "poseEstimateYDeviation": 0.5,
-        "poseEstimateThetaDeviation": 0.26
-      },
-      "foxglovePanelTitle": "Debug: real obstacles, distances, why we stopped"
-    },
-    "Log!rosout": {
-      "topicToRender": "/rosout",
-      "minLogLevel": 3,
-      "searchTerms": [],
-      "nameFilter": {},
-      "foxglovePanelTitle": "Nav2 warnings"
-    },
-    "RawMessages!nav_status": {
-      "topicPath": "/nav_debug/status",
-      "diffEnabled": false,
-      "diffMethod": "custom",
-      "diffTopicPath": "",
-      "showFullMessageForDiff": false,
-      "expansion": "all",
-      "foxglovePanelTitle": "Nav debug status"
-    },
     "Tab!map": {
       "activeTabIdx": 0,
       "tabs": [
@@ -927,20 +763,6 @@
             "first": "3D!nav",
             "second": "Plot!nav_cmd",
             "splitPercentage": 78.0
-          }
-        },
-        {
-          "title": "Debug",
-          "layout": {
-            "direction": "column",
-            "first": "3D!debug",
-            "second": {
-              "direction": "row",
-              "first": "Log!rosout",
-              "second": "RawMessages!nav_status",
-              "splitPercentage": 62.0
-            },
-            "splitPercentage": 72.0
           }
         },
         {
@@ -976,12 +798,7 @@
     },
     "second": {
       "direction": "column",
-      "first": {
-        "direction": "row",
-        "first": "DiagnosticSummary!diag",
-        "second": "DiagnosticStatusPanel!diag",
-        "splitPercentage": 50.0
-      },
+      "first": "DiagnosticSummary!diag",
       "second": {
         "direction": "column",
         "first": {
@@ -994,14 +811,9 @@
           "direction": "column",
           "first": {
             "direction": "row",
-            "first": "RawMessages!steer_state",
-            "second": {
-              "direction": "row",
-              "first": "RawMessages!controller_state",
-              "second": "RawMessages!lights_state",
-              "splitPercentage": 50.0
-            },
-            "splitPercentage": 33.33
+            "first": "RawMessages!battery",
+            "second": "CallService!cancel_nav",
+            "splitPercentage": 60.0
           },
           "second": "Tab!buttons",
           "splitPercentage": 31.03
