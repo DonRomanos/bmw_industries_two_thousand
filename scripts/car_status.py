@@ -7,7 +7,8 @@
                                      (/car_status/marker, frame base_link; scripts/rviz.sh starts it)
 
 Run it inside the dev container with the terminal switched to the car or to a replay.
-Rates are measured while the script listens, so give slow topics a moment (--wait).
+Rates are measured while the script listens. It waits up to 10 s (--wait) for the topics to be discovered and
+prints as soon as all of them arrived.
 """
 import argparse
 import math
@@ -22,6 +23,7 @@ from rclpy.qos import QoSProfile, QoSReliabilityPolicy
 from visualization_msgs.msg import Marker
 
 STALE_S = 3.0
+MIN_LISTEN_S = 1.5
 # 12 V AGM: about 12.7 V full, below 11.8 V half empty, below 11.0 V nearly flat.
 BATT_OK_V, BATT_LOW_V = 11.8, 11.0
 GREEN, AMBER, RED, GREY = (0.2, 0.9, 0.4), (1.0, 0.7, 0.1), (1.0, 0.25, 0.25), (0.7, 0.7, 0.7)
@@ -139,6 +141,9 @@ class CarStatus(Node):
                 row('controller', controller), row('slam', slam),
                 row('lights', lambda l: 'FAILSAFE ACTIVE' if l.failsafe_active else 'ok')]
 
+    def got_all_data(self):
+        return all(d.msg is not None for d in self.data.values())
+
     def got_data(self):
         return any(d.msg is not None for d in self.data.values())
 
@@ -147,7 +152,8 @@ def main():
     p = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     p.add_argument('--watch', action='store_true', help='refresh every second')
     p.add_argument('--rviz', action='store_true', help='publish /car_status/marker for RViz')
-    p.add_argument('--wait', type=float, default=3.0, help='seconds to listen before printing')
+    p.add_argument('--wait', type=float, default=10.0,
+                   help='most seconds to listen before printing (stops early once every topic arrived)')
     args = p.parse_args()
 
     rclpy.init()
@@ -157,9 +163,12 @@ def main():
         if args.rviz:
             rclpy.spin(node)
         else:
-            end = time.monotonic() + args.wait
-            while time.monotonic() < end:
+            start = time.monotonic()
+            while time.monotonic() - start < args.wait:
                 rclpy.spin_once(node, timeout_sec=0.1)
+                # Discovery can be slow: stop early once everything arrived, after a moment to measure rates.
+                if time.monotonic() - start > MIN_LISTEN_S and node.got_all_data():
+                    break
             while True:
                 lines = node.report()
                 print(('\033[H\033[J' if args.watch else '') + '\n'.join(lines), flush=True)
