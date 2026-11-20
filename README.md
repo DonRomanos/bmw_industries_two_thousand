@@ -16,6 +16,7 @@
   <a href="#-connecting-to-the-car">Connect</a> ·
   <a href="#-development-container">Dev container</a> ·
   <a href="#-examples">Examples</a> ·
+  <a href="USECASES.md">Use cases</a> ·
   <a href="#-foxglove-recommended">Foxglove</a> ·
   <a href="#-rviz2">RViz2</a> ·
   <a href="#-bag-viewer">Bags</a> ·
@@ -45,7 +46,9 @@ stereo camera, builds a map, localizes itself and drives autonomously. This kit 
 | [student_ws/](student_ws) | Your colcon workspace (put your packages in `student_ws/src`) |
 | [rviz/bitt.rviz](rviz/bitt.rviz), [scripts/rviz.sh](scripts/rviz.sh), [scripts/controls.py](scripts/controls.py) | RViz2 layout (shared by the live view and the bag viewer), launcher for the dev container, and the lights/horn/cancel button window |
 | [examples/](examples) | Example scripts: camera, obstacles, navigation goals, lights, bag reader |
+| [USECASES.md](USECASES.md) | The tasks for the course: intent detection, parking, memory and monitoring, and your own idea |
 | [scripts/doctor.py](scripts/doctor.py), [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Connection check for the car and fixes for common problems |
+| [scripts/cancel_navigation.py](scripts/cancel_navigation.py) | Abort the active Nav2 goal from a terminal, the car stops |
 | [scripts/set_car_time.py](scripts/set_car_time.py) | Set the car's clock from your laptop over ROS (the car has no battery-backed clock) |
 | [scripts/play_bag.sh](scripts/play_bag.sh), [scripts/bitt_env.sh](scripts/bitt_env.sh) | Replay a bag as the car inside the dev container / switch a terminal between car and replay |
 | [ros_ws/src/car_interfaces/](ros_ws/src/car_interfaces) | The car's message definitions (lights, steering, drive mode, ...), built into the dev container |
