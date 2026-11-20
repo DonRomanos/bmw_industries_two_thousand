@@ -20,6 +20,12 @@ Visualization Manager:
         Value: /robot_description
         Durability Policy: Transient Local
         Reliability Policy: Reliable
+    - Class: rviz_default_plugins/Marker
+      Name: Battery and wheel speed
+      Enabled: true
+      Topic:
+        Value: /car_status/marker
+        Reliability Policy: Reliable
     - Class: rviz_default_plugins/Odometry
       Name: Odometry
       Enabled: false

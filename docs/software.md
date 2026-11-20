@@ -45,7 +45,8 @@ Camera and map topics are large; use the `/preview/...` topics over Wi-Fi.
 | `/steer_state` | `car_interfaces/SteerState` | Steering angle (rad, + left) and calibration state (20 Hz) |
 | `/controller_state`, `/controller_raw` | `car_interfaces/ControllerState`, `sensor_msgs/Joy` | Remote controller connection and raw axes/buttons |
 | `/lights_state` | `car_interfaces/LightsState` | Lights as actually shown by the firmware |
-| `/wheel_odom`, `/batt_status` | `car_interfaces/WheelOdom`, `BattStatus` | Defined in the contract, **not published yet** (no hardware) |
+| `/wheel_odom` | `car_interfaces/WheelOdom` | Wheel encoders (about 44 Hz): cumulative `left_count` / `right_count` ticks (wrap at int32) and the derived `left_speed_mps` / `right_speed_mps`, positive = forward. For speed use these; for the pose use the SLAM odometry |
+| `/batt_status` | `car_interfaces/BattStatus` | Battery (1 Hz): `voltage_total` in V (12 V AGM: about 12.7 full, below 11.8 half empty, below 11 nearly flat), `current_a` (0 = not sensed), `estop_clear` (false = e-stop pressed). `voltage_1` is the battery, `voltage_2` stays 0.0 because the car has one battery |
 
 ### Navigation (Nav2)
 

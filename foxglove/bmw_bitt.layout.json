@@ -585,14 +585,293 @@
       "buttonTooltip": "Cancels the active Nav2 goal, the car stops",
       "foxglovePanelTitle": "Navigation"
     },
-    "RawMessages!battery": {
-      "topicPath": "/batt_status",
-      "diffEnabled": false,
-      "diffMethod": "custom",
-      "diffTopicPath": "",
-      "showFullMessageForDiff": false,
-      "expansion": "all",
+    "Indicator!battery": {
+      "path": "/batt_status.voltage_total",
+      "style": "background",
+      "fallbackColor": "#6b7280",
+      "fallbackLabel": "no data",
+      "rules": [
+        {
+          "operator": ">",
+          "rawValue": "13.0",
+          "color": "#2e9e5b",
+          "label": "> 13.0 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "13.0",
+          "color": "#2e9e5b",
+          "label": "13.0 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "12.9",
+          "color": "#2e9e5b",
+          "label": "12.9 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "12.8",
+          "color": "#2e9e5b",
+          "label": "12.8 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "12.7",
+          "color": "#2e9e5b",
+          "label": "12.7 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "12.6",
+          "color": "#2e9e5b",
+          "label": "12.6 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "12.5",
+          "color": "#2e9e5b",
+          "label": "12.5 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "12.4",
+          "color": "#2e9e5b",
+          "label": "12.4 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "12.3",
+          "color": "#2e9e5b",
+          "label": "12.3 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "12.2",
+          "color": "#2e9e5b",
+          "label": "12.2 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "12.1",
+          "color": "#2e9e5b",
+          "label": "12.1 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "12.0",
+          "color": "#2e9e5b",
+          "label": "12.0 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "11.9",
+          "color": "#2e9e5b",
+          "label": "11.9 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "11.8",
+          "color": "#2e9e5b",
+          "label": "11.8 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "11.7",
+          "color": "#e0a030",
+          "label": "11.7 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "11.6",
+          "color": "#e0a030",
+          "label": "11.6 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "11.5",
+          "color": "#e0a030",
+          "label": "11.5 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "11.4",
+          "color": "#e0a030",
+          "label": "11.4 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "11.3",
+          "color": "#e0a030",
+          "label": "11.3 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "11.2",
+          "color": "#e0a030",
+          "label": "11.2 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "11.1",
+          "color": "#e0a030",
+          "label": "11.1 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "11.0",
+          "color": "#e0a030",
+          "label": "11.0 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "10.9",
+          "color": "#d64545",
+          "label": "10.9 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "10.8",
+          "color": "#d64545",
+          "label": "10.8 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "10.7",
+          "color": "#d64545",
+          "label": "10.7 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "10.6",
+          "color": "#d64545",
+          "label": "10.6 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "10.5",
+          "color": "#d64545",
+          "label": "10.5 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "10.4",
+          "color": "#d64545",
+          "label": "10.4 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "10.3",
+          "color": "#d64545",
+          "label": "10.3 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "10.2",
+          "color": "#d64545",
+          "label": "10.2 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "10.1",
+          "color": "#d64545",
+          "label": "10.1 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "10.0",
+          "color": "#d64545",
+          "label": "10.0 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "9.9",
+          "color": "#d64545",
+          "label": "9.9 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "9.8",
+          "color": "#d64545",
+          "label": "9.8 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "9.7",
+          "color": "#d64545",
+          "label": "9.7 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "9.6",
+          "color": "#d64545",
+          "label": "9.6 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "9.5",
+          "color": "#d64545",
+          "label": "9.5 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "9.4",
+          "color": "#d64545",
+          "label": "9.4 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "9.3",
+          "color": "#d64545",
+          "label": "9.3 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "9.2",
+          "color": "#d64545",
+          "label": "9.2 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "9.1",
+          "color": "#d64545",
+          "label": "9.1 V"
+        },
+        {
+          "operator": ">=",
+          "rawValue": "9.0",
+          "color": "#d64545",
+          "label": "9.0 V"
+        },
+        {
+          "operator": "<",
+          "rawValue": "9.0",
+          "color": "#d64545",
+          "label": "< 9.0 V"
+        }
+      ],
       "foxglovePanelTitle": "Battery"
+    },
+    "Indicator!estop": {
+      "path": "/batt_status.estop_clear",
+      "style": "background",
+      "fallbackColor": "#6b7280",
+      "fallbackLabel": "no data",
+      "rules": [
+        {
+          "operator": "=",
+          "rawValue": "true",
+          "color": "#2e9e5b",
+          "label": "E-stop clear"
+        },
+        {
+          "operator": "=",
+          "rawValue": "false",
+          "color": "#d64545",
+          "label": "E-STOP PRESSED"
+        }
+      ],
+      "foxglovePanelTitle": "E-stop"
     },
     "3D!nav": {
       "followTf": "odom",
@@ -753,6 +1032,31 @@
       "sidebarDimension": 0,
       "foxglovePanelTitle": "Nav2 velocity command"
     },
+    "Plot!wheel_speed": {
+      "paths": [
+        {
+          "value": "/wheel_odom.left_speed_mps",
+          "label": "left [m/s]",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        },
+        {
+          "value": "/wheel_odom.right_speed_mps",
+          "label": "right [m/s]",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "followingViewWidth": 30,
+      "sidebarDimension": 0,
+      "foxglovePanelTitle": "Wheel speed"
+    },
     "Tab!map": {
       "activeTabIdx": 0,
       "tabs": [
@@ -761,7 +1065,12 @@
           "layout": {
             "direction": "column",
             "first": "3D!nav",
-            "second": "Plot!nav_cmd",
+            "second": {
+              "direction": "row",
+              "first": "Plot!nav_cmd",
+              "second": "Plot!wheel_speed",
+              "splitPercentage": 50.0
+            },
             "splitPercentage": 78.0
           }
         },
@@ -811,9 +1120,14 @@
           "direction": "column",
           "first": {
             "direction": "row",
-            "first": "RawMessages!battery",
-            "second": "CallService!cancel_nav",
-            "splitPercentage": 60.0
+            "first": "Indicator!battery",
+            "second": {
+              "direction": "row",
+              "first": "Indicator!estop",
+              "second": "CallService!cancel_nav",
+              "splitPercentage": 50.0
+            },
+            "splitPercentage": 33.33
           },
           "second": "Tab!buttons",
           "splitPercentage": 31.03
